@@ -1,0 +1,21 @@
+th{
+	color: white;
+}
+label{
+	color: white;
+}
+#table_info {
+	color: white;
+}
+#table_previous{
+	color: white !important;
+}
+#table_next{
+	color: white !important;
+}
+.label-contact3{
+	text-align: center;
+	color: white;
+	display: block;
+	padding-bottom: 70px;
+}
