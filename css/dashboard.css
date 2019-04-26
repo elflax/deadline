@@ -19,3 +19,9 @@ label{
 	display: block;
 	padding-bottom: 70px;
 }
+.paginate_button{
+	color: white !important;
+}
+.current{
+	color: black !important;
+}

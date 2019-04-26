@@ -12,49 +12,37 @@
 	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 	<link rel="stylesheet" type="text/css" href="css/dashboard.css">
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
 </head>
+<body>
 
 	<div class="bg-contact3" style="background-image: url('images/bg-01.jpg');">
 		<div class="container-contact3">
-			<div class="wrap-contact3" style="width: 900px;">
-				<span class="contact3-form-title" style="padding-bottom: 0px;">
-					Applicants
-				</span>
-				<div class="cont" style="width: 100%; overflow-x: auto;">
-					<table id="table">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th>Name</th>
-								<th>Student id</th>
-								<th>Student Email</th>
-								<th>Phone</th>
-								<th>Major</th>
-								<th>College</th>
-								<th>Section</th>
-								<th>Term</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php for($i=0;$i<100;$i++){ ?>
-							<tr>
-								<td>34</td>
-								<td>Liliana</td>
-								<td>49857998</td>
-								<td>javierandresr@gmail.com</td>
-								<td>2856210</td>
-								<td>MCS</td>
-								<td>IFAS</td>
-								<td></td>
-								<td>SUmmer 2019</td>
-							</tr>
-							<?php } ?>
-						</tbody>
-					</table>
-				</div>
+			<div class="wrap-contact3">
+				<img src="./images/banner.jpeg" class="wrap-image">
+				<form class="contact3-form validate-form">
+					<span class="contact3-form-title" style="padding-bottom: 0px;">
+						Dashboard
+					</span>
+					<label class="label-contact3">
+						Student Approval List
+					</label>
+					<div class="wrap-input3 validate-input" data-validate="Name is required">
+						<input class="input3" type="text" name="name" placeholder="Name" required>
+						<span class="focus-input3"></span>
+					</div>
+
+					<div class="wrap-input3 validate-input" data-validate="Email is required">
+						<input class="input3" type="text" name="email" placeholder="Email" required>
+						<span class="focus-input3"></span>
+					</div>
+
+					<div class="container-contact3-form-btn text-center" style="text-align: center;">
+						<button class="contact3-form-btn">
+							Submit
+						</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -63,7 +51,6 @@
 	<div id="dropDownSelect1"></div>
 
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-	<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 	<script src="vendor/bootstrap/js/popper.js"></script>
 	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script src="vendor/select2/select2.min.js"></script>
@@ -72,13 +59,11 @@
 			minimumResultsForSearch: 20,
 			dropdownParent: $('#dropDownSelect1')
 		});
-		$(document).ready(() => {
-			$('#table').DataTable();
-		});
 	</script>
 	<script src="js/main.js"></script>
 
 	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}

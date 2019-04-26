@@ -154,7 +154,7 @@ iframe {
   background: -webkit-linear-gradient(45deg, #56ab2f, #a8e063);
   background: -o-linear-gradient(45deg, #56ab2f, #a8e063);
   background: -moz-linear-gradient(45deg, #56ab2f, #a8e063);
-  background: linear-gradient(50deg, #0f1229, #2558a7);
+  background: linear-gradient(70deg, #000000, #2e62cc);
   border-radius: 10px;
   overflow: hidden;
   padding: 72px 55px 65px 55px;
@@ -165,6 +165,7 @@ iframe {
 [  ]*/
 
 .contact3-form {
+  font-size: 18px;
   width: 100%;
 }
 
@@ -196,7 +197,7 @@ iframe {
   width: 100%;
   background: transparent;
   font-family: Poppins-Regular;
-  font-size: 15px;
+  font-size: 18px;
   color: #fff;
   line-height: 1.2;
   padding: 0 5px;
@@ -237,7 +238,7 @@ input.input3 {
 
 
 textarea.input3 {
-  min-height: 115px;
+  min-height: 150px;
   padding-top: 13px;
   padding-bottom: 13px;
 }
@@ -474,6 +475,10 @@ textarea.input3 {
   display: none;
 }
 
+.wrap-image{
+    width: 100%;
+    padding-bottom: 30px;
+}
 
 /*//////////////////////////////////////////////////////////////////
 [ Restyle Select2 ]*/
@@ -506,6 +511,7 @@ textarea.input3 {
   line-height: 1.2;
   padding-left: 5px ;
   background-color: transparent;
+  font-size: 18px;
 }
 
 .select2-container--default .select2-selection--single .select2-selection__arrow {
@@ -592,6 +598,9 @@ textarea.input3 {
   font-size: 15px;
   color: #555555;
   line-height: 1.2;
+}
+.paginate_button{
+  color: white;
 }
 
 
