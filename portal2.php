@@ -29,29 +29,25 @@
 					<table id="table">
 						<thead>
 							<tr>
-								<th>#</th>
 								<th>Name</th>
-								<th>Student id</th>
-								<th>Student Email</th>
-								<th>Phone</th>
+								<th>UFID</th>
+								<th>Email</th>
 								<th>Major</th>
 								<th>College</th>
-								<th>Section</th>
-								<th>Term</th>
+								<th>Section Term</th>
+								<th>Status</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php for($i=0;$i<100;$i++){ ?>
 							<tr>
-								<td>34</td>
-								<td>Liliana</td>
-								<td>49857998</td>
-								<td>javierandresr@gmail.com</td>
-								<td>2856210</td>
-								<td>MCS</td>
-								<td>IFAS</td>
-								<td></td>
-								<td>SUmmer 2019</td>
+								<th>Name</th>
+								<th>UFID</th>
+								<th>Email</th>
+								<th>Major</th>
+								<th>College</th>
+								<th>Section Term</th>
+								<th>Status</th>
 							</tr>
 							<?php } ?>
 						</tbody>

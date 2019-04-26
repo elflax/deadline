@@ -1,3 +1,36 @@
+<?php 
+	$error = '';
+	if($_SERVER["REQUEST_METHOD"] == "POST"){
+		$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
+		mysql_select_db("bioinformatics") or die(mysql_error());
+
+		$name = $_POST['name'];
+		$password = $_POST['password'];
+
+		$name = stripslashes($name);
+		$password = stripslashes($password);
+
+		$sql="SELECT password FROM users WHERE name='".$name."'";
+
+	    $result = mysql_query($sql);
+
+	    $cont = 0;
+	    $presult = '';
+	    while ($row = mysql_fetch_assoc($result)) {
+	    	$cont++;
+	    	$presult = $row['password'];
+		}
+	    if($cont == 0){
+			$error = 'Name not found';
+	    }else{
+	    	if($password != $presult){
+	    		$error = 'Password incorrect';
+	    	}else{
+		    	header("Location: /portal1.php");
+		    }
+	    }
+	}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,10 +50,15 @@
 <body>
 
 	<div class="bg-contact3" style="background-image: url('images/bg-01.jpg');">
+			<?php if($error != ''){ ?>
+			<div class="alert alert-danger" role="alert">
+				<?php echo $error; ?>
+			</div>
+			<?php } ?>
 		<div class="container-contact3">
 			<div class="wrap-contact3">
 				<img src="./images/banner.jpeg" class="wrap-image">
-				<form class="contact3-form validate-form">
+				<form class="contact3-form validate-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 					<span class="contact3-form-title" style="padding-bottom: 0px;">
 						Dashboard
 					</span>
@@ -32,8 +70,8 @@
 						<span class="focus-input3"></span>
 					</div>
 
-					<div class="wrap-input3 validate-input" data-validate="Email is required">
-						<input class="input3" type="text" name="email" placeholder="Email" required>
+					<div class="wrap-input3 validate-input" data-validate="Password is required">
+						<input class="input3" type="password" name="password" placeholder="Password" required>
 						<span class="focus-input3"></span>
 					</div>
 
