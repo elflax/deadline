@@ -1,4 +1,8 @@
 <?php
+	session_start();
+	if(isset($_SESSION['id'])){
+		header("Location: /login-portal1.php");
+	}
 	$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
 	mysql_select_db("bioinformatics") or die(mysql_error());
 	$sql="SELECT * FROM students";
@@ -65,6 +69,7 @@
 									<button class="btn btn-danger btn-xs" <?php echo ($row['status'] != 0)? 'disabled':''; ?> onclick="aprove('<?php echo $id;?>')">Deny</button>
 								</td>
 								<td><?php echo $row['id']; ?></td>
+								<td><?php echo $row['name']; ?></td>
 								<td><?php echo $row['UFID']; ?></td>
 								<td><?php echo $row['email']; ?></td>
 								<td><?php echo $row['phone']; ?></td>

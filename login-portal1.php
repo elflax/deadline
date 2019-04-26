@@ -1,4 +1,8 @@
 <?php 
+	session_start();
+	if(isset($_SESSION['id'])){
+		header("Location: /portal1.php");
+	}
 	$error = '';
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
@@ -10,15 +14,19 @@
 		$name = stripslashes($name);
 		$password = stripslashes($password);
 
-		$sql="SELECT password FROM users WHERE name='".$name."'";
+		$sql="SELECT * FROM users WHERE name='".$name."'";
 
 	    $result = mysql_query($sql);
 
 	    $cont = 0;
 	    $presult = '';
+	    $idresult = 0;
+	    $nresult = '';
 	    while ($row = mysql_fetch_assoc($result)) {
 	    	$cont++;
 	    	$presult = $row['password'];
+	    	$idresult = $row['id'];
+	    	$nresult = $row['name'];
 		}
 	    if($cont == 0){
 			$error = 'Name not found';
@@ -26,6 +34,8 @@
 	    	if($password != $presult){
 	    		$error = 'Password incorrect';
 	    	}else{
+	    		$_SESSION["id"]=$idresult;
+	    		$_SESSION["name"]=$nresult;
 		    	header("Location: /portal1.php");
 		    }
 	    }

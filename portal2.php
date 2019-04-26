@@ -1,3 +1,10 @@
+<?php
+	session_start();
+	$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
+	mysql_select_db("bioinformatics") or die(mysql_error());
+	$sql="SELECT * FROM students";
+	$result = mysql_query($sql);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,15 +46,19 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php for($i=0;$i<100;$i++){ ?>
+							<?php while ($row = mysql_fetch_assoc($result)) {?>
 							<tr>
-								<th>Name</th>
-								<th>UFID</th>
-								<th>Email</th>
-								<th>Major</th>
-								<th>College</th>
-								<th>Section Term</th>
-								<th>Status</th>
+								<th><?php echo $row['name']; ?></th>
+								<th><?php echo $row['UFID']; ?></th>
+								<th><?php echo $row['email']; ?></th>
+								<th><?php echo $row['major']; ?></th>
+								<th><?php echo $row['regitration_type']; ?></th>
+								<th><?php echo $row['section'] .' - '. $row['term']; ?></th>
+								<?php if($row['status'] == 1){ ?>
+								<th>Aprovado</th>	
+								<?php }else{?>
+								<th>Desaprovado</th>
+								<?php } ?>
 							</tr>
 							<?php } ?>
 						</tbody>
