@@ -66,7 +66,7 @@
 							<tr>
 								<td class="btn-group">
 									<button class="btn btn-success btn-xs" <?php echo ($row['status'] != 0)? 'disabled':''; ?> onclick="aprove('<?php echo $id;?>')">Approve</button>
-									<button class="btn btn-danger btn-xs" <?php echo ($row['status'] != 0)? 'disabled':''; ?> onclick="aprove('<?php echo $id;?>')">Deny</button>
+									<button class="btn btn-danger btn-xs" <?php echo ($row['status'] != 0)? 'disabled':''; ?> onclick="deaprove('<?php echo $id;?>')">Deny</button>
 								</td>
 								<td><?php echo $row['id']; ?></td>
 								<td><?php echo $row['name']; ?></td>
@@ -112,6 +112,19 @@
 	<script>
 		function aprove(id){			
         	var url = './ajax/aprove.php';
+        	$.ajax({
+	          	url: url,
+	          	type: 'post',
+	          	data: {id: id},
+	          	dataType: "json",
+	          	success: function(data) {
+	          		alert(data);
+	          	},
+	          	async: false
+	        });
+		}
+		function deaprove(id){			
+        	var url = './ajax/deaprove.php';
         	$.ajax({
 	          	url: url,
 	          	type: 'post',
