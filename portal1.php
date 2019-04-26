@@ -1,3 +1,9 @@
+<?php
+	$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
+	mysql_select_db("bioinformatics") or die(mysql_error());
+	$sql="SELECT * FROM students";
+	$result = mysql_query($sql);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +41,7 @@
 								<th>Action</th>
 								<th>#</th>
 								<th>Name</th>
-								<th>Student id</th>
+								<th>Student UFID</th>
 								<th>Student Email</th>
 								<th>Phone</th>
 								<th>Major</th>
@@ -43,7 +49,7 @@
 								<th>Section</th>
 								<th>Term</th>
 								<th>Mentor Name</th>
-								<th>Mentor Id</th>
+								<th>Mentor UFID</th>
 								<th>Mentor Email</th>
 								<th>Mentor department</th>
 								<th>Mentor College</th>
@@ -52,28 +58,28 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php for($i=0;$i<100;$i++){ ?>
+							<?php while ($row = mysql_fetch_assoc($result)) { $id = $row['id'];?>
 							<tr>
 								<td class="btn-group">
-									<button class="btn btn-success btn-xs">Approve</button>
-									<button class="btn btn-danger btn-xs">Deny</button>
+									<button class="btn btn-success btn-xs" <?php echo ($row['status'] != 0)? 'disabled':''; ?> onclick="aprove('<?php echo $id;?>')">Approve</button>
+									<button class="btn btn-danger btn-xs" <?php echo ($row['status'] != 0)? 'disabled':''; ?> onclick="aprove('<?php echo $id;?>')">Deny</button>
 								</td>
-								<td>34</td>
-								<td>Liliana</td>
-								<td>49857998</td>
-								<td>javierandresr@gmail.com</td>
-								<td>2856210</td>
-								<td>MCS</td>
-								<td>IFAS</td>
-								<td></td>
-								<td>SUmmer 2019</td>
-								<td>Ricardo Arjona</td>
-								<td>4878998</td>
-								<td>jreal@ufl.edu.com</td>
-								<td>Mentor department</td>
-								<td>Mentor College</td>
-								<td>Brief description</td>
-								<td></td>
+								<td><?php echo $row['id']; ?></td>
+								<td><?php echo $row['UFID']; ?></td>
+								<td><?php echo $row['email']; ?></td>
+								<td><?php echo $row['phone']; ?></td>
+								<td><?php echo $row['major']; ?></td>
+								<td><?php echo $row['regitration_type']; ?></td>
+								<td><?php echo $row['section']; ?></td>
+								<td><?php echo $row['term']; ?></td>
+								<td><?php echo $row['mentor_name']; ?>2019</td>
+								<td><?php echo $row['mentor_ufid']; ?></td>
+								<td><?php echo $row['mentor_email']; ?></td>
+								<td><?php echo $row['mentor_phone']; ?></td>
+								<td><?php echo $row['mentor_department']; ?></td>
+								<td><?php echo $row['mentor_college']; ?></td>
+								<td><?php echo $row['description']; ?></td>
+								<td><?php echo $row['aprovated_by']; ?></td>
 							</tr>
 							<?php } ?>
 						</tbody>
@@ -99,6 +105,19 @@
 	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script src="vendor/select2/select2.min.js"></script>
 	<script>
+		function aprove(id){			
+        	var url = './ajax/aprove.php';
+        	$.ajax({
+	          	url: url,
+	          	type: 'post',
+	          	data: {id: id},
+	          	dataType: "json",
+	          	success: function(data) {
+	          		alert(data);
+	          	},
+	          	async: false
+	        });
+		}
 		$(".selection-2").select2({
 			minimumResultsForSearch: 20,
 			dropdownParent: $('#dropDownSelect1')

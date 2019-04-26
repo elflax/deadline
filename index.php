@@ -1,6 +1,52 @@
 <?php
 	$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
-	// mysql_select_db("formapp") or die(mysql_error());
+	mysql_select_db("bioinformatics") or die(mysql_error());
+
+	$message = '';
+	if($_SERVER["REQUEST_METHOD"] == "POST"){
+		$name = $_POST['name'];
+		$ufid = $_POST['ufid'];
+		$email = $_POST['email'];
+		$phone = $_POST['phone'];
+		$major = $_POST['major'];
+		$regitration_type = $_POST['regitration_type'];
+		$section = $_POST['section'];
+		$term = $_POST['term'];
+		$mentor_name = $_POST['mentor_name'];
+		$mentor_ufid = $_POST['mentor_ufid'];
+		$mentor_email = $_POST['mentor_email'];
+		$mentor_phone = $_POST['mentor_phone'];
+		$mentor_department = $_POST['mentor_department'];
+		$mentor_college = $_POST['mentor_college'];
+		$brief_description = $_POST['brief_description'];
+
+
+		$name = stripslashes($name);
+		$ufid = stripslashes($ufid);
+		$email = stripslashes($email);
+		$phone = stripslashes($phone);
+		$major = stripslashes($major);
+		$regitration_type = stripslashes($regitration_type);
+		$section = stripslashes($section);
+		$term = stripslashes($term);
+		$mentor_name = stripslashes($mentor_name);
+		$mentor_ufid = stripslashes($mentor_ufid);
+		$mentor_email = stripslashes($mentor_email);
+		$mentor_phone = stripslashes($mentor_phone);
+		$mentor_department = stripslashes($mentor_department);
+		$mentor_college = stripslashes($mentor_college);
+		$brief_description = stripslashes($brief_description);
+
+		$sql = 'INSERT INTO `students`(`name`, `UFID`, `email`, `phone`, `major`, `regitration_type`, `section`, `term`, `mentor_name`, `mentor_ufid`, `mentor_email`, `mentor_phone`, `mentor_department`, `mentor_college`, `description`) VALUES ("'.$name.'","'.$ufid.'","'.$email.'","'.$phone.'","'.$major.'","'.$regitration_type.'","'.$section.'","'.$term.'","'.$mentor_name.'","'.$mentor_ufid.'","'.$mentor_email.'","'.$mentor_phone.'","'.$mentor_department.'","'.$mentor_college.'","'.$brief_description.'")';
+		mysql_query($sql) or die(mysql_error());
+
+		mysql_close();
+		$message = 'Usuario registrado!';
+	}
+	$sql="SELECT * FROM terms";
+	$terms = mysql_query($sql);	
+	$sql="SELECT * FROM section";
+	$section = mysql_query($sql);	
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,10 +66,15 @@
 <body>
 
 	<div class="bg-contact3" style="background-image: url('images/bg-01.jpg');">
+		<?php if($message != ''){ ?>
+		<div class="alert alert-success" role="alert">
+			<?php echo $message; ?>
+		</div>
+		<?php } ?>
 		<div class="container-contact3">
 			<div class="wrap-contact3">
 				<img src="./images/banner.jpeg" class="wrap-image">
-				<form class="contact3-form validate-form">
+				<form class="contact3-form validate-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 					<span class="contact3-form-title">
 						Student Informaction
 					</span>
@@ -60,14 +111,14 @@
 						</div>
 						<br>
 						<div class="contact3-form-radio m-r-42">
-							<input class="input-radio3" id="radio1" type="radio" name="request" value="say-hi" checked="checked">
+							<input class="input-radio3" id="radio1" type="radio" name="regitration_type" value="BSC4913" checked="checked">
 							<label class="label-radio3" for="radio1">
 								BSC4913
 							</label>
 						</div>
 
 						<div class="contact3-form-radio">
-							<input class="input-radio3" id="radio2" type="radio" name="request" value="get-quote">
+							<input class="input-radio3" id="radio2" type="radio" name="regitration_type" value="BSC4914">
 							<label class="label-radio3" for="radio2">
 								BSC4914
 							</label>
@@ -77,11 +128,10 @@
 					<div class="wrap-input3">
 						<div>
 							<select class="selection-2" name="section">
-								<option>Section:</option>
-								<option>Needed Services</option>
-								<option>eCommerce Bussiness</option>
-								<option>UI/UX Design</option>
-								<option>Online Services</option>
+								<option value="0">Section</option>
+							<?php while($row = mysql_fetch_assoc($section)){ ?>
+								<option value="<?php echo $row['id']; ?>"><?php echo $row['name']; ?></option>
+							<?php } ?>
 							</select>
 						</div>
 						<span class="focus-input3"></span>
@@ -91,11 +141,10 @@
 					<div class="wrap-input3">
 						<div>
 							<select class="selection-2" name="term">
-								<option>Term:</option>
-								<option>Budget</option>
-								<option>1500 $</option>
-								<option>2000 $</option>
-								<option>3000 $</option>
+								<option value="0">Terms:</option>
+							<?php while($row = mysql_fetch_assoc($terms)){ ?>
+								<option value="<?php echo $row['id']; ?>"><?php echo $row['name']; ?></option>
+							<?php } ?>
 							</select>
 						</div>
 						<span class="focus-input3"></span>
@@ -114,7 +163,7 @@
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate="Mentor UFID is required">
-						<input class="input3" name="mentor_ufid" placeholder="Mentor UFID" required>
+						<input class="input3" type="number" name="mentor_ufid" placeholder="Mentor UFID" required>
 						<span class="focus-input3"></span>
 					</div>
 
@@ -124,7 +173,7 @@
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate="Mentor phone is required">
-						<input class="input3" name="mentor_phone" placeholder="Mentor phone" required>
+						<input class="input3" type="number" name="mentor_phone" placeholder="Mentor phone" required>
 						<span class="focus-input3"></span>
 					</div>
 					
