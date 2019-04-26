@@ -1,7 +1,7 @@
 <?php 
 	session_start();
 	if(isset($_SESSION['id'])){
-		header("Location: /portal1.php");
+		header("Location: ./portal1.php");
 	}
 	$error = '';
 	if($_SERVER["REQUEST_METHOD"] == "POST"){

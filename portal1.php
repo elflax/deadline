@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	if(isset($_SESSION['id'])){
+	if(!isset($_SESSION['id'])){
 		header("Location: /login-portal1.php");
 	}
 	$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
@@ -34,6 +34,9 @@
 				<img src="./images/banner.jpeg" class="wrap-image">
 				<span class="contact3-form-title" style="padding-bottom: 0px;">
 					Dashboard
+					<div style="text-align: right;">
+						<a href="./ajax/logout.php" class="btn btn-xs btn-success" title="logout" style="min-width: 60px;"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+					</div>
 				</span>
 				<label class="label-contact3">
 					Student Approval List
@@ -54,6 +57,7 @@
 								<th>Term</th>
 								<th>Mentor Name</th>
 								<th>Mentor UFID</th>
+								<th>Mentor Phone</th>
 								<th>Mentor Email</th>
 								<th>Mentor department</th>
 								<th>Mentor College</th>
