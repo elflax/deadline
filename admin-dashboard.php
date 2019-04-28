@@ -66,11 +66,11 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php while ($row = mysql_fetch_assoc($result)) { $id = $row['id'];?>
+							<?php while ($row = mysql_fetch_assoc($result)) { $id = $row['id']; $email = $row['email']; ?>
 							<tr>
 								<td class="btn-group">
-									<button class="btn btn-success btn-xs" <?php echo ($row['status'] != 0)? 'disabled':''; ?> onclick="aprove('<?php echo $id;?>')">Approve</button>
-									<button class="btn btn-danger btn-xs" <?php echo ($row['status'] != 0)? 'disabled':''; ?> onclick="deaprove('<?php echo $id;?>')">Deny</button>
+									<button class="btn btn-success btn-xs" <?php echo ($row['status'] != 0)? 'disabled':''; ?> onclick="aprove('<?php echo $id;?>', '<?php echo $email; ?>', 1)">Approve</button>
+									<button class="btn btn-danger btn-xs" <?php echo ($row['status'] != 0)? 'disabled':''; ?> onclick="aprove('<?php echo $id;?>', '<?php echo $email; ?>', 2)">Deny</button>
 								</td>
 								<td><?php echo $row['id']; ?></td>
 								<td><?php echo $row['name']; ?></td>
@@ -114,25 +114,12 @@
 	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script src="vendor/select2/select2.min.js"></script>
 	<script>
-		function aprove(id){			
+		function aprove(id, email, type){			
         	var url = './ajax/aprove.php';
         	$.ajax({
 	          	url: url,
 	          	type: 'post',
-	          	data: {id: id},
-	          	dataType: "json",
-	          	success: function(data) {
-	          		alert(data);
-	          	},
-	          	async: false
-	        });
-		}
-		function deaprove(id){			
-        	var url = './ajax/deaprove.php';
-        	$.ajax({
-	          	url: url,
-	          	type: 'post',
-	          	data: {id: id},
+	          	data: {id: id, email: email, type: type},
 	          	dataType: "json",
 	          	success: function(data) {
 	          		alert(data);
