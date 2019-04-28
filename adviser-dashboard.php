@@ -46,18 +46,18 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php while ($row = mysql_fetch_assoc($result)) {?>
+							<?php while($row = mysql_fetch_assoc($result)) {?>
 							<tr>
-								<th><?php echo $row['name']; ?></th>
-								<th><?php echo $row['UFID']; ?></th>
-								<th><?php echo $row['email']; ?></th>
-								<th><?php echo $row['major']; ?></th>
-								<th><?php echo $row['regitration_type']; ?></th>
-								<th><?php echo $row['section'] .' - '. $row['term']; ?></th>
+								<td><?php echo $row['name']; ?></td>
+								<td><?php echo $row['UFID']; ?></td>
+								<td><?php echo $row['email']; ?></td>
+								<td><?php echo $row['major']; ?></td>
+								<td><?php echo $row['regitration_type']; ?></td>
+								<td><?php echo $row['section'] .' - '. $row['term']; ?></td>
 								<?php if($row['status'] == 1){ ?>
-								<th>Aprovado</th>	
+								<td>Aprovado</td>	
 								<?php }else{?>
-								<th>Desaprovado</th>
+								<td>Desaprovado</td>
 								<?php } ?>
 							</tr>
 							<?php } ?>

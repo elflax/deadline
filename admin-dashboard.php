@@ -7,6 +7,23 @@
 	mysql_select_db("bioinformatics") or die(mysql_error());
 	$sql="SELECT * FROM students";
 	$result = mysql_query($sql);
+	$message = '';
+	if(isset($_GET['id'])){
+		$sql = 'UPDATE `students` SET `status`='.$_GET['type'].',`aprovated_by`='.$_SESSION['id'].' WHERE id='.$_GET['id'];
+		$result = mysql_query($sql);
+		if(!$result){
+			$message = mysql_error();
+		}else{
+			$to = $_GET['email'];
+			$from = "example@gmail.com";
+	    	$headers = "From: $from";
+	    	if($_GET['id'] == 1){
+	    		$message = 'Your form request has been aproved';
+	    	}else{
+	    		$message = 'Your form request has been rejected';
+	    	}
+		}
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,6 +46,9 @@
 </head>
 
 	<div class="bg-contact3" style="background-image: url('images/bg-01.jpg');">
+		<div class="alert alert-success" role="alert">
+			<?php echo $message; ?>
+		</div>
 		<div class="container-contact3">
 			<div class="wrap-contact3" style="width: 900px;">
 				<img src="./images/banner.jpeg" class="wrap-image">
@@ -69,8 +89,8 @@
 							<?php while ($row = mysql_fetch_assoc($result)) { $id = $row['id']; $email = $row['email']; ?>
 							<tr>
 								<td class="btn-group">
-									<button class="btn btn-success btn-xs" <?php echo ($row['status'] != 0)? 'disabled':''; ?> onclick="aprove('<?php echo $id;?>', '<?php echo $email; ?>', 1)">Approve</button>
-									<button class="btn btn-danger btn-xs" <?php echo ($row['status'] != 0)? 'disabled':''; ?> onclick="aprove('<?php echo $id;?>', '<?php echo $email; ?>', 2)">Deny</button>
+									<a href="./admin-dashboard.php?id=<?php echo $id;?>&email=<?php echo $email; ?>&type=1" class="btn btn-success btn-xs" <?php echo ($row['status'] != 0)? 'disabled':''; ?>>Approve</a>
+									<a href="./admin-dashboard.php?id=<?php echo $id;?>&email=<?php echo $email; ?>&type=2" class="btn btn-danger btn-xs" <?php echo ($row['status'] != 0)? 'disabled':''; ?>>Deny</a>
 								</td>
 								<td><?php echo $row['id']; ?></td>
 								<td><?php echo $row['name']; ?></td>
@@ -114,19 +134,7 @@
 	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script src="vendor/select2/select2.min.js"></script>
 	<script>
-		function aprove(id, email, type){			
-        	var url = './ajax/aprove.php';
-        	$.ajax({
-	          	url: url,
-	          	type: 'post',
-	          	data: {id: id, email: email, type: type},
-	          	dataType: "json",
-	          	success: function(data) {
-	          		alert(data);
-	          	},
-	          	async: false
-	        });
-		}
+		
 		$(".selection-2").select2({
 			minimumResultsForSearch: 20,
 			dropdownParent: $('#dropDownSelect1')

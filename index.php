@@ -100,7 +100,7 @@
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate="Major is required">
-						<input class="input3" type="number" name="major" placeholder="Major" required>
+						<input class="input3" name="major" placeholder="Major" required>
 						<span class="focus-input3"></span>
 					</div>
 
@@ -125,17 +125,9 @@
 						</div>
 					</div>
 
-					<div class="wrap-input3">
-						<div>
-							<select class="selection-2" name="section">
-								<option value="0">Section</option>
-							<?php while($row = mysql_fetch_assoc($section)){ ?>
-								<option value="<?php echo $row['id']; ?>"><?php echo $row['name']; ?></option>
-							<?php } ?>
-							</select>
-						</div>
+					<div class="wrap-input3 validate-input" data-validate="section is required">
+						<input class="input3" name="section" placeholder="Section" required>
 						<span class="focus-input3"></span>
-
 					</div>
 
 					<div class="wrap-input3">

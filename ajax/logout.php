@@ -3,4 +3,4 @@
 	unset($_SESSION["id"]);
 	unset($_SESSION["name"]);
 	session_destroy();
-	header('Location: ../login-portal1.php');
+	header('Location: ../login-dashboard.php');

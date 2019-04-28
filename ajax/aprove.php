@@ -16,5 +16,5 @@
     	}else{
     		$message = 'Your form request has been rejected';
     	}
-		echo 1;
+		echo json_encode(['value' => 'Status changed successfully!']);
 	}

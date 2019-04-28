@@ -1,7 +1,7 @@
 <?php 
 	session_start();
 	if(isset($_SESSION['id'])){
-		header("Location: ./portal1.php");
+		header("Location: ./admin-dashboard.php");
 	}
 	$error = '';
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -36,7 +36,7 @@
 	    	}else{
 	    		$_SESSION["id"]=$idresult;
 	    		$_SESSION["name"]=$nresult;
-		    	header("Location: /portal1.php");
+		    	header("Location: ./admin-dashboard.php");
 		    }
 	    }
 	}
