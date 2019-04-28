@@ -85,7 +85,7 @@
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate="UFID is required">
-						<input class="input3" type="number" name="ufid" placeholder="UFID #" required>
+						<input class="input3" type="text" name="ufid" placeholder="UFID #" required>
 						<span class="focus-input3"></span>
 					</div>
 
@@ -95,7 +95,7 @@
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate="UFID is required">
-						<input class="input3" type="number" name="phone" placeholder="Studen Phone #" required>
+						<input class="input3" type="text" name="phone" placeholder="Studen Phone #" required>
 						<span class="focus-input3"></span>
 					</div>
 
@@ -155,7 +155,7 @@
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate="Mentor UFID is required">
-						<input class="input3" type="number" name="mentor_ufid" placeholder="Mentor UFID" required>
+						<input class="input3" type="text" name="mentor_ufid" placeholder="Mentor UFID" required>
 						<span class="focus-input3"></span>
 					</div>
 
