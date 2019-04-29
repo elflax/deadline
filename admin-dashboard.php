@@ -1,12 +1,10 @@
 <?php
 	session_start();
 	if(!isset($_SESSION['id'])){
-		header("Location: /login-portal1.php");
+		header("Location: ./login-dashboard.php");
 	}
 	$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
 	mysql_select_db("bioinformatics") or die(mysql_error());
-	$sql="SELECT * FROM students";
-	$result = mysql_query($sql);
 	$message = '';
 	if(isset($_GET['id'])){
 		$sql = 'UPDATE `students` SET `status`='.$_GET['type'].',`aprovated_by`='.$_SESSION['id'].' WHERE id='.$_GET['id'];
@@ -24,6 +22,8 @@
 	    	}
 		}
 	}
+	$sql="SELECT students.id as students_id, students.name as students_name, UFID, email, phone, major, regitration_type, section, term, mentor_name, mentor_ufid, mentor_email, mentor_phone, mentor_department, mentor_college, description, status, aprovated_by, users.name as users_name FROM students LEFT JOIN users ON students.aprovated_by=users.id";
+	$result = mysql_query($sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -86,29 +86,35 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php while ($row = mysql_fetch_assoc($result)) { $id = $row['id']; $email = $row['email']; ?>
+							<?php while ($row = mysql_fetch_assoc($result)) { $id = $row['students_id']; $email = $row['email']; ?>
 							<tr>
-								<td class="btn-group">
-									<a href="./admin-dashboard.php?id=<?php echo $id;?>&email=<?php echo $email; ?>&type=1" class="btn btn-success btn-xs" <?php echo ($row['status'] != 0)? 'disabled':''; ?>>Approve</a>
-									<a href="./admin-dashboard.php?id=<?php echo $id;?>&email=<?php echo $email; ?>&type=2" class="btn btn-danger btn-xs" <?php echo ($row['status'] != 0)? 'disabled':''; ?>>Deny</a>
+								<td class="btn-group text-center">
+									<?php if($row['status'] == 0) {?>
+									<a href="./admin-dashboard.php?id=<?php echo $id;?>&email=<?php echo $email; ?>&type=1" class="btn btn-success btn-xs">Approve</a>
+									<a href="./admin-dashboard.php?id=<?php echo $id;?>&email=<?php echo $email; ?>&type=2" class="btn btn-danger btn-xs">Deny</a>									
+									<?php }elseif($row['status'] == 1){ ?>
+										<b class="text-success">Approve</b>
+									<?php }elseif($row['status'] == 2){?>
+										<b class="text-danger">Deny</b>
+									<?php }?>
 								</td>
-								<td><?php echo $row['id']; ?></td>
-								<td><?php echo $row['name']; ?></td>
-								<td><?php echo $row['UFID']; ?></td>
-								<td><?php echo $row['email']; ?></td>
-								<td><?php echo $row['phone']; ?></td>
-								<td><?php echo $row['major']; ?></td>
-								<td><?php echo $row['regitration_type']; ?></td>
-								<td><?php echo $row['section']; ?></td>
-								<td><?php echo $row['term']; ?></td>
-								<td><?php echo $row['mentor_name']; ?>2019</td>
-								<td><?php echo $row['mentor_ufid']; ?></td>
-								<td><?php echo $row['mentor_email']; ?></td>
-								<td><?php echo $row['mentor_phone']; ?></td>
-								<td><?php echo $row['mentor_department']; ?></td>
-								<td><?php echo $row['mentor_college']; ?></td>
-								<td><?php echo $row['description']; ?></td>
-								<td><?php echo $row['aprovated_by']; ?></td>
+								<td class="text-center"><?php echo $row['students_id']; ?></td>
+								<td class="text-center"><?php echo $row['students_name']; ?></td>
+								<td class="text-center"><?php echo $row['UFID']; ?></td>
+								<td class="text-center"><?php echo $row['email']; ?></td>
+								<td class="text-center"><?php echo $row['phone']; ?></td>
+								<td class="text-center"><?php echo $row['major']; ?></td>
+								<td class="text-center"><?php echo $row['regitration_type']; ?></td>
+								<td class="text-center"><?php echo $row['section']; ?></td>
+								<td class="text-center"><?php echo $row['term']; ?></td>
+								<td class="text-center"><?php echo $row['mentor_name']; ?>2019</td>
+								<td class="text-center"><?php echo $row['mentor_ufid']; ?></td>
+								<td class="text-center"><?php echo $row['mentor_email']; ?></td>
+								<td class="text-center"><?php echo $row['mentor_phone']; ?></td>
+								<td class="text-center"><?php echo $row['mentor_department']; ?></td>
+								<td class="text-center"><?php echo $row['mentor_college']; ?></td>
+								<td class="text-center"><?php echo $row['description']; ?></td>
+								<td class="text-center"><?php echo $row['users_name']; ?></td>
 							</tr>
 							<?php } ?>
 						</tbody>

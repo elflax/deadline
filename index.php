@@ -95,7 +95,7 @@
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate="UFID is required">
-						<input class="input3" type="text" name="phone" placeholder="Studen Phone #" required>
+						<input class="input3" type="number" name="phone" placeholder="Studen Phone #" required>
 						<span class="focus-input3"></span>
 					</div>
 
@@ -125,20 +125,13 @@
 						</div>
 					</div>
 
-					<div class="wrap-input3 validate-input" data-validate="section is required">
+					<div class="wrap-input3 validate-input" data-validate="Section is required">
 						<input class="input3" name="section" placeholder="Section" required>
 						<span class="focus-input3"></span>
 					</div>
 
-					<div class="wrap-input3">
-						<div>
-							<select class="selection-2" name="term">
-								<option value="0">Terms:</option>
-							<?php while($row = mysql_fetch_assoc($terms)){ ?>
-								<option value="<?php echo $row['id']; ?>"><?php echo $row['name']; ?></option>
-							<?php } ?>
-							</select>
-						</div>
+					<div class="wrap-input3 validate-input" data-validate="Terms is required">
+						<input class="input3" name="term" placeholder="Terms" required>
 						<span class="focus-input3"></span>
 					</div>
 
