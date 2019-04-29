@@ -109,8 +109,8 @@
 								<td class="text-center"><?php echo $row['term']; ?></td>
 								<td class="text-center"><?php echo $row['mentor_name']; ?>2019</td>
 								<td class="text-center"><?php echo $row['mentor_ufid']; ?></td>
-								<td class="text-center"><?php echo $row['mentor_email']; ?></td>
 								<td class="text-center"><?php echo $row['mentor_phone']; ?></td>
+								<td class="text-center"><?php echo $row['mentor_email']; ?></td>
 								<td class="text-center"><?php echo $row['mentor_department']; ?></td>
 								<td class="text-center"><?php echo $row['mentor_college']; ?></td>
 								<td class="text-center"><?php echo $row['description']; ?></td>
