@@ -1,7 +1,8 @@
 <?php
 	$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
 	mysql_select_db("bioinformatics") or die(mysql_error());
-
+	$sql = 'SELECT `id`, `name`, `value` FROM `config` WHERE `id` = 1 AND `value`=`0`';
+	$form = mysql_query($sql);	
 	$message = '';
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$name = $_POST['name'];
@@ -79,15 +80,6 @@
 						Student Informaction
 					</span>
 
-					<div style="text-align: right;">
-						<label class="switch">
-						  	<input type="checkbox" id="active-form" checked>
-						  	<span class="slider round"></span><br>
-							<label class="label-contact3" style="margin-top: 20px; color: white;">Active form</label>
-						</label>
-					</div>
-					<br>
-					<br>
 					<div class="wrap-input3 validate-input" data-validate="Name is required">
 						<input class="input3" type="text" name="name" placeholder="Name" required>
 						<span class="focus-input3"></span>
@@ -185,12 +177,13 @@
 						<textarea class="input3" name="brief_description" placeholder="Brief description of research project (conceptual, 4 sentences):" required></textarea>
 						<span class="focus-input3"></span>
 					</div>
-
+					<?php if($form){ ?>
 					<div class="container-contact3-form-btn text-center" style="text-align: center;">
 						<button class="contact3-form-btn" id="submit-button">
 							Submit
 						</button>
 					</div>
+					<?php } ?>
 				</form>
 			</div>
 		</div>
@@ -207,21 +200,6 @@
 		$(".selection-2").select2({
 			minimumResultsForSearch: 20,
 			dropdownParent: $('#dropDownSelect1')
-		});
-		$(document).ready(() => {
-			$('#active-form').click(() => {				
-				if( !$('#active-form').is(':checked') ) {
-					$('.input3').each((num, elem) => {
-						$(elem).attr('readonly', 'true');
-					});
-					$('#submit-button').css('display', 'none');
-				}else{
-					$('.input3').each((num, elem) => {
-						$(elem).removeAttr('readonly');
-					});
-					$('#submit-button').css('display', 'block');
-				}
-			});
 		});
 	</script>
 	<script src="js/main.js"></script>

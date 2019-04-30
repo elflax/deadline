@@ -3,6 +3,10 @@
 	if(!isset($_SESSION['id'])){
 		header("Location: ./login-dashboard.php");
 	}
+	if(!isset($_GET['active'])){
+		$sql = 'UPDATE `config` SET `value` = '0' WHERE `config`.`id` = '.$_GET['active'];
+		mysql_query($sql);
+	}
 	$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
 	mysql_select_db("bioinformatics") or die(mysql_error());
 	$message = '';
@@ -66,10 +70,21 @@
 				<label class="label-contact3">
 					Student Approval List 
 				</label>
+
+				<div style="text-align: right;">
+					<label class="switch">
+					  	<input type="checkbox" id="active-form" checked>
+					  	<span class="slider round"></span><br>
+						<label class="label-contact3" style="margin-top: 20px; color: white;">Active form</label>
+					</label>
+				</div>
+				<br>
+				<br>
 				<div class="cont" style="width: 100%; overflow-x: auto;">
 					<table id="table">
 						<thead>
 							<tr>
+								<th>Approved/Denied by:</th>
 								<th>Action</th>
 								<th>#</th>
 								<th>Name</th>
@@ -87,13 +102,12 @@
 								<th>Mentor department</th>
 								<th>Mentor College</th>
 								<th>Brief description</th>
-								<th>Approved/Denied by:</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php while ($row = mysql_fetch_assoc($result)) { $id = $row['students_id']; $email = $row['email']; ?>
 							<tr>
-								<td class="text-center" data-toggle="popover" title="Action" data-placement="top" data-content="<?php echo $row['users_name']; ?>"><?php echo (count($row['users_name']) <= 10)? $row['users_name']:substr(string, 0, 10); ?></td>
+								<td class="text-center" data-toggle="popover" title="Approved/Denied by:" data-placement="top" data-content="<?php echo $row['users_name']; ?>"><?php echo (strlen($row['users_name']) <= 10)? $row['users_name']:substr($row['users_name'], 0, 10); ?></td>
 								<td class="btn-group text-center">
 									<?php if($row['status'] == 0) {?>
 									<a href="./admin-dashboard.php?id=<?php echo $id;?>&email=<?php echo $email; ?>&type=1" class="btn btn-success btn-xs">Approve</a>
@@ -104,22 +118,22 @@
 										<b class="text-danger">Deny</b>
 									<?php }?>
 								</td>
-								<td class="text-center" data-toggle="popover" title="Name" data-placement="top" data-content="<?php echo $row['students_id']; ?>"><?php echo $row['students_id']; ?></td>
-								<td class="text-center" data-toggle="popover" title="Student UFID" data-placement="top" data-content="<?php echo $row['students_name']; ?>"><?php echo (count($row['students_name']) <= 10)? $row['students_name']:substr(string, 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Student Email" data-placement="top" data-content="<?php echo $row['UFID']; ?>"><?php echo (count($row['UFID']) <= 10)? $row['UFID']:substr(string, 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Phone" data-placement="top" data-content="<?php echo $row['email']; ?>"><?php echo (count($row['email']) <= 10)? $row['email']:substr(string, 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Major" data-placement="top" data-content="<?php echo $row['phone']; ?>"><?php echo (count($row['phone']) <= 10)? $row['phone']:substr(string, 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="College" data-placement="top" data-content="<?php echo $row['major']; ?>"><?php echo (count($row['major']) <= 10)? $row['major']:substr(string, 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Section" data-placement="top" data-content="<?php echo $row['regitration_type']; ?>"><?php echo (count($row['regitration_type']) <= 10)? $row['regitration_type']:substr(string, 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Term" data-placement="top" data-content="<?php echo $row['section']; ?>"><?php echo (count($row['section']) <= 10)? $row['section']:substr(string, 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Mentor Name" data-placement="top" data-content="<?php echo $row['term']; ?>"><?php echo (count($row['term']) <= 10)? $row['term']:substr(string, 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Mentor UFID" data-placement="top" data-content="<?php echo $row['mentor_name']; ?>"><?php echo (count($row['mentor_name']) <= 10)? $row['mentor_name']:substr(string, 0, 10); ?>2019</td>
-								<td class="text-center" data-toggle="popover" title="Mentor Phone" data-placement="top" data-content="<?php echo $row['mentor_ufid']; ?>"><?php echo (count($row['mentor_ufid']) <= 10)? $row['mentor_ufid']:substr(string, 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Mentor Email" data-placement="top" data-content="<?php echo $row['mentor_phone']; ?>"><?php echo (count($row['mentor_phone']) <= 10)? $row['mentor_phone']:substr(string, 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Mentor department" data-placement="top" data-content="<?php echo $row['mentor_email']; ?>"><?php echo (count($row['mentor_email']) <= 10)? $row['mentor_email']:substr(string, 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Mentor College" data-placement="top" data-content="<?php echo $row['mentor_department']; ?>"><?php echo (count($row['mentor_department']) <= 10)? $row['mentor_department']:substr(string, 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Brief description" data-placement="top" data-content="<?php echo $row['mentor_college']; ?>"><?php echo (count($row['mentor_college']) <= 10)? $row['mentor_college']:substr(string, 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Approved/Denied by:" data-placement="top" data-content="<?php echo $row['description']; ?>"><?php echo (count($row['description']) <= 10)? $row['description']:substr(string, 0, 10); ?></td>
+								<td class="text-center" data-toggle="popover" title="#" data-placement="top" data-content="<?php echo $row['students_id']; ?>"><?php echo $row['students_id']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Name" data-placement="top" data-content="<?php echo $row['students_name']; ?>"><?php echo (strlen($row['students_name']) <= 10)? $row['students_name']:substr($row['students_name'], 0, 10); ?></td>
+								<td class="text-center" data-toggle="popover" title="Student UFID" data-placement="top" data-content="<?php echo $row['UFID']; ?>"><?php echo (strlen($row['UFID']) <= 10)? $row['UFID']:substr($row['UFID'], 0, 10); ?></td>
+								<td class="text-center" data-toggle="popover" title="Student Email" data-placement="top" data-content="<?php echo $row['email']; ?>"><?php echo (strlen($row['email']) <= 10)? $row['email']:substr($row['email'], 0, 10); ?></td>
+								<td class="text-center" data-toggle="popover" title="Phone" data-placement="top" data-content="<?php echo $row['phone']; ?>"><?php echo (strlen($row['phone']) <= 10)? $row['phone']:substr($row['phone'], 0, 10); ?></td>
+								<td class="text-center" data-toggle="popover" title="Major" data-placement="top" data-content="<?php echo $row['major']; ?>"><?php echo (strlen($row['major']) <= 10)? $row['major']:substr($row['major'], 0, 10); ?></td>
+								<td class="text-center" data-toggle="popover" title="College" data-placement="top" data-content="<?php echo $row['regitration_type']; ?>"><?php echo (strlen($row['regitration_type']) <= 10)? $row['regitration_type']:substr($row['regitration_type'], 0, 10); ?></td>
+								<td class="text-center" data-toggle="popover" title="Section" data-placement="top" data-content="<?php echo $row['section']; ?>"><?php echo (strlen($row['section']) <= 10)? $row['section']:substr($row['section'], 0, 10); ?></td>
+								<td class="text-center" data-toggle="popover" title="Term" data-placement="top" data-content="<?php echo $row['term']; ?>"><?php echo (strlen($row['term']) <= 10)? $row['term']:substr($row['term'], 0, 10); ?></td>
+								<td class="text-center" data-toggle="popover" title="Mentor Name" data-placement="top" data-content="<?php echo $row['mentor_name']; ?>"><?php echo (strlen($row['mentor_name']) <= 10)? $row['mentor_name']:substr($row['mentor_name'], 0, 10); ?>2019</td>
+								<td class="text-center" data-toggle="popover" title="Mentor UFID" data-placement="top" data-content="<?php echo $row['mentor_ufid']; ?>"><?php echo (strlen($row['mentor_ufid']) <= 10)? $row['mentor_ufid']:substr($row['mentor_ufid'], 0, 10); ?></td>
+								<td class="text-center" data-toggle="popover" title="Mentor Phone" data-placement="top" data-content="<?php echo $row['mentor_phone']; ?>"><?php echo (strlen($row['mentor_phone']) <= 10)? $row['mentor_phone']:substr($row['mentor_phone'], 0, 10); ?></td>
+								<td class="text-center" data-toggle="popover" title="Mentor Email" data-placement="top" data-content="<?php echo $row['mentor_email']; ?>"><?php echo (strlen($row['mentor_email']) <= 10)? $row['mentor_email']:substr($row['mentor_email'], 0, 10); ?></td>
+								<td class="text-center" data-toggle="popover" title="Mentor department" data-placement="top" data-content="<?php echo $row['mentor_department']; ?>"><?php echo (strlen($row['mentor_department']) <= 10)? $row['mentor_department']:substr($row['mentor_department'], 0, 10); ?></td>
+								<td class="text-center" data-toggle="popover" title="Mentor College" data-placement="top" data-content="<?php echo $row['mentor_college']; ?>"><?php echo (strlen($row['mentor_college']) <= 10)? $row['mentor_college']:substr($row['mentor_college'], 0, 10); ?></td>
+								<td class="text-center" data-toggle="popover" title="Brief description" data-placement="top" data-content="<?php echo $row['description']; ?>"><?php echo (strlen($row['description']) <= 10)? $row['description']:substr($row['description'], 0, 10); ?></td>
 							</tr>
 							<?php } ?>
 						</tbody>
@@ -164,6 +178,15 @@
   					$('[data-toggle="popover"]').popover({
   						trigger: 'hover'
   					});
+  					$('#active-form').click(() => {		
+  						if(confirm('Are you change the form status?')){		
+							if( !$('#active-form').is(':checked') ) {
+								document.location = './admin-dashboard.php?active=1';
+							}else{
+								document.location = './admin-dashboard.php?active=0';
+							}
+						}
+					});
 		        }
 			});
 		});
