@@ -25,3 +25,7 @@ label{
 .current{
 	color: black !important;
 }
+
+.popover {
+     max-width: 2000px;
+ }

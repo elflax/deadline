@@ -1,8 +1,10 @@
 <?php
 	$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
 	mysql_select_db("bioinformatics") or die(mysql_error());
-	$sql = 'SELECT `id`, `name`, `value` FROM `config` WHERE `id` = 1 AND `value`=`0`';
-	$form = mysql_query($sql);	
+	$sql = 'SELECT `id`, `name`, `value` FROM `config` WHERE `id` = 1 AND `value`="0"';
+	$form = mysql_query($sql);
+	$row2 = mysql_fetch_assoc($form);
+	$result2 = $row2['value'];	
 	$message = '';
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$name = $_POST['name'];
@@ -70,6 +72,11 @@
 		<?php if($message != ''){ ?>
 		<div class="alert alert-success" role="alert">
 			<?php echo $message; ?>
+		</div>
+		<?php } ?>
+		<?php if($result2 != '0'){ ?>
+		<div class="alert alert-warning" role="alert">
+			The form is closed
 		</div>
 		<?php } ?>
 		<div class="container-contact3">
@@ -177,7 +184,7 @@
 						<textarea class="input3" name="brief_description" placeholder="Brief description of research project (conceptual, 4 sentences):" required></textarea>
 						<span class="focus-input3"></span>
 					</div>
-					<?php if($form){ ?>
+					<?php if($result2 == '0'){ ?>
 					<div class="container-contact3-form-btn text-center" style="text-align: center;">
 						<button class="contact3-form-btn" id="submit-button">
 							Submit
