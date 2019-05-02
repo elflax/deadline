@@ -48,16 +48,16 @@
 						<tbody>
 							<?php while($row = mysql_fetch_assoc($result)) {?>
 							<tr>
-								<td><?php echo $row['name']; ?></td>
-								<td><?php echo $row['UFID']; ?></td>
-								<td><?php echo $row['email']; ?></td>
-								<td><?php echo $row['major']; ?></td>
-								<td><?php echo $row['regitration_type']; ?></td>
-								<td><?php echo $row['section'] .' - '. $row['term']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Name" data-placement="top" data-content="<?php echo ' '.$row['name']; ?>"><?php echo $row['name']; ?></td>
+								<td class="text-center" data-toggle="popover" title="UFID" data-placement="top" data-content="<?php echo ' '.$row['UFID']; ?>"><?php echo $row['UFID']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Email" data-placement="top" data-content="<?php echo ' '.$row['email']; ?>"><?php echo $row['email']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Major" data-placement="top" data-content="<?php echo ' '.$row['major']; ?>"><?php echo $row['major']; ?></td>
+								<td class="text-center" data-toggle="popover" title="College" data-placement="top" data-content="<?php echo ' '.$row['regitration_type']; ?>"><?php echo $row['regitration_type']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Section Term" data-placement="top" data-content="<?php echo ' '.$row['section']; ?>"><?php echo $row['section'] .' - '. $row['term']; ?></td>
 								<?php if($row['status'] == 1){ ?>
-								<td>Aprovado</td>	
+								<td class="text-center" data-toggle="popover" title="Status" data-placement="top" data-content="Approved">Approved</td>	
 								<?php }else{?>
-								<td>Desaprovado</td>
+								<td class="text-center" data-toggle="popover" title="Status" data-placement="top" data-content="Deny">Deny</td>
 								<?php } ?>
 							</tr>
 							<?php } ?>
