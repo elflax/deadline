@@ -91,21 +91,25 @@
 		$(document).ready(() => {
 			$('#table').DataTable({
 				dom: 'Bfrtip',
-		         buttons: [{
+		        buttons: [{
 		            extend: 'excel',
 				    customize: function (xlsx) {
 		                var sheet = xlsx.xl.worksheets['sheet1.xml'];
 		                var numrows = 3;
 		                var clR = $('row', sheet);
-		                var i = 0;
+		                var i = -2;
 		                var j = 0;
 		                var tr = $('tbody tr').children();
 		                $('row c ', sheet).each(function () {
 		                	var content = $(tr[i]).attr('data-content');
 		                	var r = $(this).attr('r');
-		                	var row = r[1];
+		                	var row = parseInt(r[1]);
 		                	var col = r[0];
-		                	if(row >= 2){
+		                	console.log(r);
+		                	console.log(row > 2);
+		                	console.log(content);
+		                	if(row > 2 ){
+		                		console.log('entra');
 		                		var node1 = $(this).children()[0].nodeName
 		                		var tag = $(this).children()[0];
 		                		if(node1 == 'v'){
@@ -118,9 +122,6 @@
 		                	i++;
 		                	if(i%17 == 0){
 		                		j=0;
-		                	}
-		                	if(col == 'R'){
-	                			$(this).html('');
 		                	}
 		                });
 

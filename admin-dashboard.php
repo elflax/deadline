@@ -63,7 +63,7 @@
 		</div>
 		<?php } ?>
 		<div class="container-contact3">
-			<div class="wrap-contact3" style="width: 900px;">
+			<div class="wrap-contact3" style="width: 90%;">
 				<img src="./images/banner.jpeg" class="wrap-image">
 				<span class="contact3-form-title" style="padding-bottom: 0px;">
 					Dashboard
@@ -115,7 +115,7 @@
 							<?php while ($row = mysql_fetch_assoc($result)) { $id = $row['students_id']; $email = $row['email']; ?>
 							<tr>
 								<td class="text-center" data-toggle="popover" title="Approved/Denied by:" data-placement="top" data-content="<?php echo ' '.$row['users_name']; ?>"><?php echo (strlen($row['users_name']) <= 20)? $row['users_name']:substr($row['users_name'], 0, 10); ?></td>
-								<td class="btn-group text-center" data-content='<?php ($row["status"]==1)? "Approve":(($row["status"]==2)? "Deny":"Waiting" ) ?>'>
+								<td class="btn-group text-center" data-content='<?php echo ($row["status"]=='1')? "Approve":(($row["status"]=='2')? "Deny":"Waiting" ); ?>'>
 									<?php if($row['status'] == '0') {?>
 									<a href="./admin-dashboard.php?id=<?php echo $id;?>&email=<?php echo $email; ?>&type=1" class="btn btn-success btn-xs">Approve</a>
 									<a href="./admin-dashboard.php?id=<?php echo $id;?>&email=<?php echo $email; ?>&type=2" class="btn btn-danger btn-xs">Deny</a>									
@@ -181,15 +181,19 @@
 		                var sheet = xlsx.xl.worksheets['sheet1.xml'];
 		                var numrows = 3;
 		                var clR = $('row', sheet);
-		                var i = 0;
+		                var i = -2;
 		                var j = 0;
 		                var tr = $('tbody tr').children();
 		                $('row c ', sheet).each(function () {
 		                	var content = $(tr[i]).attr('data-content');
 		                	var r = $(this).attr('r');
-		                	var row = r[1];
+		                	var row = parseInt(r[1]);
 		                	var col = r[0];
-		                	if(row >= 2){
+		                	console.log(r);
+		                	console.log(row > 2);
+		                	console.log(content);
+		                	if(row > 2 ){
+		                		console.log('entra');
 		                		var node1 = $(this).children()[0].nodeName
 		                		var tag = $(this).children()[0];
 		                		if(node1 == 'v'){
@@ -202,9 +206,6 @@
 		                	i++;
 		                	if(i%17 == 0){
 		                		j=0;
-		                	}
-		                	if(col == 'R'){
-	                			$(this).html('');
 		                	}
 		                });
 
