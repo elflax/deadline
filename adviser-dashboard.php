@@ -27,7 +27,7 @@
 
 	<div class="bg-contact3" style="background-image: url('images/bg-01.jpg');">
 		<div class="container-contact3">
-			<div class="wrap-contact3" style="width: 900px;">
+			<div class="wrap-contact3" style="width: 92%;">
 				<img src="./images/banner.jpeg" class="wrap-image">
 				<span class="contact3-form-title" style="padding-bottom: 0px;">
 					Applicants
