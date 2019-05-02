@@ -63,7 +63,7 @@
 		</div>
 		<?php } ?>
 		<div class="container-contact3">
-			<div class="wrap-contact3" style="width: 92%;">
+			<div class="wrap-contact3" style="width: 900px;">
 				<img src="./images/banner.jpeg" class="wrap-image">
 				<span class="contact3-form-title" style="padding-bottom: 0px;">
 					Dashboard
@@ -116,12 +116,12 @@
 							<tr>
 								<td class="text-center" data-toggle="popover" title="Approved/Denied by:" data-placement="top" data-content="<?php echo ' '.$row['users_name']; ?>"><?php echo (strlen($row['users_name']) <= 20)? $row['users_name']:substr($row['users_name'], 0, 10); ?></td>
 								<td class="btn-group text-center" data-content='<?php ($row["status"]==1)? "Approve":(($row["status"]==2)? "Deny":"Waiting" ) ?>'>
-									<?php if($row['status'] == 0) {?>
+									<?php if($row['status'] == '0') {?>
 									<a href="./admin-dashboard.php?id=<?php echo $id;?>&email=<?php echo $email; ?>&type=1" class="btn btn-success btn-xs">Approve</a>
 									<a href="./admin-dashboard.php?id=<?php echo $id;?>&email=<?php echo $email; ?>&type=2" class="btn btn-danger btn-xs">Deny</a>									
-									<?php }elseif($row['status'] == 1){ ?>
+									<?php }elseif($row['status'] == '1'){ ?>
 										<b class="text-success">Approve</b>
-									<?php }elseif($row['status'] == 2){?>
+									<?php }elseif($row['status'] == '2'){?>
 										<b class="text-danger">Deny</b>
 									<?php }?>
 								</td>
@@ -214,7 +214,7 @@
 		            },
 		        }],
 		        columnDefs: [ {
-			        targets: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
+			        targets: [3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
 			        render: $.fn.dataTable.render.ellipsis(17)
 			    } ],
   		        initComplete: function () {
