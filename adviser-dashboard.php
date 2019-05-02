@@ -135,6 +135,10 @@
 		        	$('.buttons-excel').css('min-width', '70px');
 		        	$('.buttons-excel').attr('title', 'Export to Excel');
 		        	$('.buttons-excel > span').html('<i class="fa fa-file-excel-o" style="font-size: 20px;"></i> ');
+  					$('[data-toggle="popover"]').popover({
+  						trigger: 'hover'
+  					});
+
 		        }
 			});
 		});
