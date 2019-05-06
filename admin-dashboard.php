@@ -88,6 +88,13 @@
 				<br>
 				<br>
 				<div class="cont" style="width: 100%; overflow-x: auto;">
+
+					<button class="dt-button buttons-excel buttons-html5 contact3-form-btn" type="button" style="min-width: 70px;" id="export" onclick="ExportExcel();">
+						<span>
+							<i class="fa fa-file-excel-o" style="font-size: 20px;"> </i>
+						</span>	
+					</button>
+					<br><br>
 					<table id="table">
 						<thead>
 							<tr>
@@ -114,7 +121,7 @@
 						<tbody>
 							<?php while ($row = mysql_fetch_assoc($result)) { $id = $row['students_id']; $email = $row['email']; ?>
 							<tr>
-								<td class="text-center" data-toggle="popover" title="Approved/Denied by:" data-placement="top" data-content="<?php echo ' '.$row['users_name']; ?>"><?php echo (strlen($row['users_name']) <= 20)? $row['users_name']:substr($row['users_name'], 0, 10); ?></td>
+								<td class="text-center" data-toggle="popover" title="Approved/Denied by:" data-placement="top" data-content="<?php echo ' '.$row['users_name']; ?>"><?php echo $row['users_name']; ?></td>
 								<td class="btn-group text-center" data-content='<?php echo ($row["status"]=='1')? "Approve":(($row["status"]=='2')? "Deny":"Waiting" ); ?>'>
 									<?php if($row['status'] == '0') {?>
 									<a href="./admin-dashboard.php?id=<?php echo $id;?>&email=<?php echo $email; ?>&type=1" class="btn btn-success btn-xs">Approve</a>
@@ -126,21 +133,21 @@
 									<?php }?>
 								</td>
 								<td class="text-center" data-toggle="popover" title="#" data-placement="top" data-content="<?php echo ' '.$row['students_id']; ?>"><?php echo $row['students_id']; ?></td>
-								<td class="text-center" data-toggle="popover" title="Name" data-placement="top" data-content="<?php echo ' '.$row['students_name']; ?>"><?php echo (strlen($row['students_name']) <= 20)? $row['students_name']:substr($row['students_name'], 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Student UFID" data-placement="top" data-content="<?php echo ' '.$row['UFID']; ?>"><?php echo (strlen($row['UFID']) <= 20)? $row['UFID']:substr($row['UFID'], 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Student Email" data-placement="top" data-content="<?php echo ' '.$row['email']; ?>"><?php echo (strlen($row['email']) <= 20)? $row['email']:substr($row['email'], 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Phone" data-placement="top" data-content="<?php echo ' '.$row['phone']; ?>"><?php echo (strlen($row['phone']) <= 20)? $row['phone']:substr($row['phone'], 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Major" data-placement="top" data-content="<?php echo ' '.$row['major']; ?>"><?php echo (strlen($row['major']) <= 20)? $row['major']:substr($row['major'], 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="College" data-placement="top" data-content="<?php echo ' '.$row['regitration_type']; ?>"><?php echo (strlen($row['regitration_type']) <= 20)? $row['regitration_type']:substr($row['regitration_type'], 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Section" data-placement="top" data-content="<?php echo ' '.$row['section']; ?>"><?php echo (strlen($row['section']) <= 20)? $row['section']:substr($row['section'], 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Term" data-placement="top" data-content="<?php echo ' '.$row['term']; ?>"><?php echo (strlen($row['term']) <= 20)? $row['term']:substr($row['term'], 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Mentor Name" data-placement="top" data-content="<?php echo ' '.$row['mentor_name']; ?>"><?php echo (strlen($row['mentor_name']) <= 20)? $row['mentor_name']:substr($row['mentor_name'], 0, 10); ?>2019</td>
-								<td class="text-center" data-toggle="popover" title="Mentor UFID" data-placement="top" data-content="<?php echo ' '.$row['mentor_ufid']; ?>"><?php echo (strlen($row['mentor_ufid']) <= 20)? $row['mentor_ufid']:substr($row['mentor_ufid'], 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Mentor Phone" data-placement="top" data-content="<?php echo ' '.$row['mentor_phone']; ?>"><?php echo (strlen($row['mentor_phone']) <= 20)? $row['mentor_phone']:substr($row['mentor_phone'], 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Mentor Email" data-placement="top" data-content="<?php echo ' '.$row['mentor_email']; ?>"><?php echo (strlen($row['mentor_email']) <= 20)? $row['mentor_email']:substr($row['mentor_email'], 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Mentor department" data-placement="top" data-content="<?php echo ' '.$row['mentor_department']; ?>"><?php echo (strlen($row['mentor_department']) <= 20)? $row['mentor_department']:substr($row['mentor_department'], 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" title="Mentor College" data-placement="top" data-content="<?php echo ' '.$row['mentor_college']; ?>"><?php echo (strlen($row['mentor_college']) <= 20)? $row['mentor_college']:substr($row['mentor_college'], 0, 10); ?></td>
-								<td class="text-center" data-toggle="popover" style="text-overflow: " title="Brief description" data-placement="top" data-content="<?php echo ' '.$row['description']; ?>"><?php echo $row['description']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Name" data-placement="top" data-content="<?php echo ' '.$row['students_name']; ?>"><?php echo $row['students_name']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Student UFID" data-placement="top" data-content="<?php echo ' '.$row['UFID']; ?>"><?php echo $row['UFID']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Student Email" data-placement="top" data-content="<?php echo ' '.$row['email']; ?>"><?php echo $row['email']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Phone" data-placement="top" data-content="<?php echo ' '.$row['phone']; ?>"><?php echo $row['phone']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Major" data-placement="top" data-content="<?php echo ' '.$row['major']; ?>"><?php echo $row['major']; ?></td>
+								<td class="text-center" data-toggle="popover" title="College" data-placement="top" data-content="<?php echo ' '.$row['regitration_type']; ?>"><?php echo $row['regitration_type']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Section" data-placement="top" data-content="<?php echo ' '.$row['section']; ?>"><?php echo $row['section']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Term" data-placement="top" data-content="<?php echo ' '.$row['term']; ?>"><?php echo $row['term']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Mentor Name" data-placement="top" data-content="<?php echo ' '.$row['mentor_name']; ?>"><?php echo $row['mentor_name']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Mentor UFID" data-placement="top" data-content="<?php echo ' '.$row['mentor_ufid']; ?>"><?php echo $row['mentor_ufid']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Mentor Phone" data-placement="top" data-content="<?php echo ' '.$row['mentor_phone']; ?>"><?php echo $row['mentor_phone']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Mentor Email" data-placement="top" data-content="<?php echo ' '.$row['mentor_email']; ?>"><?php echo $row['mentor_email']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Mentor department" data-placement="top" data-content="<?php echo ' '.$row['mentor_department']; ?>"><?php echo $row['mentor_department']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Mentor College" data-placement="top" data-content="<?php echo ' '.$row['mentor_college']; ?>"><?php echo $row['mentor_college']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Brief description" data-placement="top" data-content="<?php echo ' '.$row['description']; ?>"><?php echo $row['description']; ?></td>
 							</tr>
 							<?php } ?>
 						</tbody>
@@ -152,7 +159,6 @@
 
 
 	<div id="dropDownSelect1"></div>
-
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
@@ -167,59 +173,34 @@
 	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script src="vendor/select2/select2.min.js"></script>
 	<script>
-		
+			var pag = ['1'];
+		function paginate(){
+			$('.paginate_button').each((ind, elem) => {
+				$(elem).click(() => {
+					var curr = $('.current').attr('data-dt-idx');
+					if(pag.indexOf(curr) === -1){
+						pag.push(curr);
+						$('[data-toggle="popover"]').popover({
+  							trigger: 'hover'
+  						});
+					}
+					paginate();
+				});
+			});
+		}
 		$(".selection-2").select2({
 			minimumResultsForSearch: 20,
 			dropdownParent: $('#dropDownSelect1')
 		});
 		$(document).ready(() => {
 			$('#table').DataTable({
-				dom: 'Bfrtip',
-		        buttons: [{
-		            extend: 'excel',
-				    customize: function (xlsx) {
-		                var sheet = xlsx.xl.worksheets['sheet1.xml'];
-		                var numrows = 3;
-		                var clR = $('row', sheet);
-		                var i = -1;
-		                var j = 0;
-		                var tr = $('tbody tr').children();
-		                $('row c ', sheet).each(function () {
-		                	var content = $(tr[i]).attr('data-content');
-		                	var r = $(this).attr('r');
-		                	var row = parseInt(r[1]);
-		                	var col = r[0];
-		                	console.log( 'content: ' + $(tr[i]).attr('data-content'));
-		                	console.log('title: ' + $(tr[i]).attr('data-original-title'));
-		                	if(row > 2 ){
-		                		var node1 = $(this).children()[0].nodeName
-		                		var tag = $(this).children()[0];
-		                		if(node1 == 'v'){
-		                			$(tag).text(content);
-		                		}else{
-		                			var tag2 = $(tag).children()[0];
-		                			$(tag2).text(content);
-		                		}
-		                	}
-		                	i++;
-		                	if(i%17 == 0){
-		                		j=0;
-		                	}
-		                });
-
-
-		                sheet.childNodes[0].childNodes[1].innerHTML = sheet.childNodes[0].childNodes[1].innerHTML;
-		            },
-		        }],
+		        
 		        columnDefs: [ {
 			        targets: [3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
-			        render: $.fn.dataTable.render.ellipsis(17)
+			        render: $.fn.dataTable.render.ellipsis(20)
 			    } ],
   		        initComplete: function () {
-		        	$('.buttons-excel').addClass('contact3-form-btn');
-		        	$('.buttons-excel').css('min-width', '70px');
-		        	$('.buttons-excel').attr('title', 'Export to Excel');
-		        	$('.buttons-excel > span').html('<i class="fa fa-file-excel-o" style="font-size: 20px;"></i> ');
+
   					$('[data-toggle="popover"]').popover({
   						trigger: 'hover'
   					});
@@ -232,6 +213,7 @@
 							}
 						}
 					});
+					paginate();
 		        },
 
 			});
@@ -242,6 +224,11 @@
 
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 <script>
+
+	function ExportExcel(){
+		window.open("download.php");
+	}	
+
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
