@@ -20,7 +20,7 @@
 			$to = $_GET['email'];
 			$from = "example@gmail.com";
 	    	$headers = "From: $from";
-	    	if($_GET['id'] == 1){
+	    	if($_GET['type'] == 1){
 	    		$message = 'Your form request has been aproved';
 	    	}else{
 	    		$message = 'Your form request has been rejected';
@@ -184,6 +184,14 @@
   							trigger: 'hover'
   						});
 					}
+					paginate();
+				});
+			});
+			$('th').each((ind, elem) => {
+				$(elem).click(() => {
+					$('[data-toggle="popover"]').popover({
+						trigger: 'hover'
+					});
 					paginate();
 				});
 			});
