@@ -60,7 +60,7 @@
 				<span class="contact3-form-title" style="padding-bottom: 0px;">
 					Adviser
 					<div style="text-align: right;">
-						<a href="./ajax/logout.php" class="btn btn-xs btn-success" title="logout" style="min-width: 60px;"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+						<a href="./ajax/logout.php?type=1" class="btn btn-xs btn-success" title="logout" style="min-width: 60px;"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
 					</div>
 					<div style="text-align: right;">
 						
