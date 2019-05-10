@@ -1,10 +1,14 @@
 <?php
 	session_start();
+	if(!isset($_SESSION['id_adviser'])){
+		header("Location: ./login-adviser.php");
+	}
+
 	$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
 	mysql_select_db("bioinformatics") or die(mysql_error());
 	$message = '';
 	if(isset($_GET['id'])){
-		$sql = 'UPDATE `students` SET `status_adviser`='.$_GET['type'].',`approved_by_adviser`='.$_SESSION['id'].' WHERE id='.$_GET['id'];
+		$sql = 'UPDATE `students` SET `status_adviser`='.$_GET['type'].',`approved_by_adviser`='.$_SESSION['id_adviser'].' WHERE id='.$_GET['id'];
 		$result = mysql_query($sql);
 		if(!$result){
 			$message = mysql_error();
@@ -54,9 +58,24 @@
 			<div class="wrap-contact3" style="width: 92%;">
 				<img src="./images/banner.jpeg" class="wrap-image">
 				<span class="contact3-form-title" style="padding-bottom: 0px;">
+					Adviser
+					<div style="text-align: right;">
+						<a href="./ajax/logout.php" class="btn btn-xs btn-success" title="logout" style="min-width: 60px;"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+					</div>
+					<div style="text-align: right;">
+						
+					</div>
+				</span>
+				<span class="contact3-form-title" style="padding-bottom: 0px;">
 					Applicants
 				</span>
 				<div class="cont" style="width: 100%; overflow-x: auto;">
+					<button class="dt-button buttons-excel buttons-html5 contact3-form-btn" type="button" style="min-width: 70px;" id="export" onclick="ExportExcel();">
+						<span>
+							<i class="fa fa-file-excel-o" style="font-size: 20px;"> </i>
+						</span>	
+					</button>
+					<br><br>
 					<table id="table">
 						<thead>
 							<tr>
@@ -168,9 +187,13 @@
 
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+	function ExportExcel(){
+		window.open("download-adviser.php");
+	}	
+
+  	window.dataLayer = window.dataLayer || [];
+  	function gtag(){dataLayer.push(arguments);}
+  	gtag('js', new Date());
 
   gtag('config', 'UA-23581568-13');
 </script>

@@ -19,7 +19,7 @@
 
 
 
-	$sql="SELECT students.id as students_id, students.name as students_name, UFID, email, phone, major, regitration_type, section, term, mentor_name, mentor_ufid, mentor_email, mentor_phone, mentor_department, mentor_college, description, status, aprovated_by, users.name as users_name FROM students LEFT JOIN users ON students.aprovated_by=users.id";
+	$sql="SELECT students.id as students_id, students.name as students_name, UFID, email, phone, major, regitration_type, section, term, mentor_name, mentor_ufid, mentor_email, mentor_phone, mentor_department, mentor_college, description, status, approved_by_adviser, users.name as users_name, status_adviser FROM students LEFT JOIN users ON students.approved_by_adviser=users.id WHERE students.status=1";
 	$result = mysql_query($sql);	
 	
 	/*
@@ -40,24 +40,15 @@
 
 	while ($fila = mysql_fetch_assoc($result)) {
 		 	$data[$x] = array('#' => ($x+1),
-		 					  'Approved/Deny by'=> $fila['users_name'] , 
+		 					  'Approved/Deny by'=> $fila['approved_by_adviser'] , 
 		 					  'Status' =>'complete', 
-		 					  'Student Name'=>$fila['students_name'], 
-		 					  'Student UFID #'=>$fila['UFID'],
-		 					  'Student Email' =>$fila['email'], 
-		 					  'Student Phone'=> $fila['phone'], 
+		 					  'Name'=>$fila['students_name'], 
+		 					  'UFID #'=>$fila['UFID'],
+		 					  'Email' =>$fila['email'], 
 		 					  'Major'=>$fila['major'],
-		 					  'Class' =>$fila['regitration_type'], 
+		 					  'College' =>$fila['regitration_type'], 
 		 					  'Class Number'=>$fila['section'], 
-		 					  'Term'=>$fila['term'],
-		 					  'Mentor Name' =>$fila['mentor_name'], 
-		 					  'Mentor UFID'=>$fila['mentor_ufid'], 
-		 					  'Mentor Phone #'=>$fila['mentor_phone'],
-		 					  'Mentor Email' =>$fila['mentor_email'], 
-		 					  'Mentor College'=>$fila['mentor_college'],
-		 					  'Mentor Department'=>$fila['mentor_department'], 
-		 					  'Research Description' => trim(preg_replace('/\s+/', ' ', $fila['description']))
-		 					  
+		 					  'Term'=>$fila['term'],		 					  
 		 					  );
 		 	$x++;
 	}	
