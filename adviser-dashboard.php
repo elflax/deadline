@@ -2,7 +2,26 @@
 	session_start();
 	$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
 	mysql_select_db("bioinformatics") or die(mysql_error());
-	$sql="SELECT * FROM students WHERE status=1";
+	$message = '';
+	if(isset($_GET['id'])){
+		$sql = 'UPDATE `students` SET `status_adviser`='.$_GET['type'].',`approved_by_adviser`='.$_SESSION['id'].' WHERE id='.$_GET['id'];
+		$result = mysql_query($sql);
+		if(!$result){
+			$message = mysql_error();
+		}else{
+			$to = $_GET['email'];
+			$from = "example@gmail.com";
+	    	$headers = "From: $from";
+    		$subject ="Application"; 
+	    	if($_GET['type'] == 1){
+	    		$message = 'Your form request has been aproved in adviser';
+	    	}else{
+	    		$message = 'Your form request has been rejected in adviser';
+	    	}
+	    	$ok = @mail($to, $subject, $message, $headers);
+		}
+	}
+	$sql="SELECT students.id as students_id, students.name as students_name, UFID, email, phone, major, regitration_type, section, term, mentor_name, mentor_ufid, mentor_email, mentor_phone, mentor_department, mentor_college, description, status, approved_by_adviser, users.name as users_name, status_adviser FROM students LEFT JOIN users ON students.approved_by_adviser=users.id WHERE students.status=1";
 	$result = mysql_query($sql);
 ?>
 <!DOCTYPE html>
@@ -26,6 +45,11 @@
 </head>
 
 	<div class="bg-contact3" style="background-image: url('images/bg-01.jpg');">
+		<?php if($message != ''){ ?>
+		<div class="alert alert-success" role="alert">
+			<?php echo $message; ?>
+		</div>
+		<?php } ?>
 		<div class="container-contact3">
 			<div class="wrap-contact3" style="width: 92%;">
 				<img src="./images/banner.jpeg" class="wrap-image">
@@ -36,6 +60,8 @@
 					<table id="table">
 						<thead>
 							<tr>
+								<th>Approved/Denied by:</th>
+								<th>Action</th>
 								<th>Name</th>
 								<th>UFID</th>
 								<th>Email</th>
@@ -48,7 +74,18 @@
 						<tbody>
 							<?php while($row = mysql_fetch_assoc($result)) {?>
 							<tr>
-								<td class="text-center" data-toggle="popover" title="Name" data-placement="top" data-content="<?php echo ' '.$row['name']; ?>"><?php echo $row['name']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Approved/Denied by:" data-placement="top" data-content="<?php echo ' '.$row['users_name']; ?>"><?php echo $row['users_name']; ?></td>
+								<td class="btn-group text-center" data-content='<?php echo ($row["status_adviser"]=='1')? "Approve":(($row["status_adviser"]=='2')? "Deny":"Waiting" ); ?>'>
+									<?php if($row['status_adviser'] == '0') {?>
+									<a href="./adviser-dashboard.php?id=<?php echo $row['students_id'];?>&email=<?php echo $row['email']; ?>&type=1" class="btn btn-success btn-xs">Approve</a>
+									<a href="./adviser-dashboard.php?id=<?php echo $row['students_id'];?>&email=<?php echo $row['email']; ?>&type=2" class="btn btn-danger btn-xs">Deny</a>									
+									<?php }elseif($row['status_adviser'] == '1'){ ?>
+										<b class="text-success">Approve</b>
+									<?php }elseif($row['status_adviser'] == '2'){?>
+										<b class="text-danger">Deny</b>
+									<?php }?>
+								</td>
+								<td class="text-center" data-toggle="popover" title="Name" data-placement="top" data-content="<?php echo ' '.$row['students_name']; ?>"><?php echo $row['students_name']; ?></td>
 								<td class="text-center" data-toggle="popover" title="UFID" data-placement="top" data-content="<?php echo ' '.$row['UFID']; ?>"><?php echo $row['UFID']; ?></td>
 								<td class="text-center" data-toggle="popover" title="Email" data-placement="top" data-content="<?php echo ' '.$row['email']; ?>"><?php echo $row['email']; ?></td>
 								<td class="text-center" data-toggle="popover" title="Major" data-placement="top" data-content="<?php echo ' '.$row['major']; ?>"><?php echo $row['major']; ?></td>
