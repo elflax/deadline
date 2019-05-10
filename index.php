@@ -6,6 +6,7 @@
 	$row2 = mysql_fetch_assoc($form);
 	$result2 = $row2['value'];	
 	$message = '';
+	$alert = '';
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$name = $_POST['name'];
 		$ufid = $_POST['ufid'];
@@ -15,6 +16,7 @@
 		$regitration_type = $_POST['regitration_type'];
 		$section = $_POST['section'];
 		$term = $_POST['term'];
+		$year = $_POST['year'];
 		$mentor_name = $_POST['mentor_name'];
 		$mentor_ufid = $_POST['mentor_ufid'];
 		$mentor_email = $_POST['mentor_email'];
@@ -32,6 +34,7 @@
 		$regitration_type = stripslashes($regitration_type);
 		$section = stripslashes($section);
 		$term = stripslashes($term);
+		$year = stripslashes($year);
 		$mentor_name = stripslashes($mentor_name);
 		$mentor_ufid = stripslashes($mentor_ufid);
 		$mentor_email = stripslashes($mentor_email);
@@ -39,12 +42,19 @@
 		$mentor_department = stripslashes($mentor_department);
 		$mentor_college = stripslashes($mentor_college);
 		$brief_description = stripslashes($brief_description);
+		if($term != "0" && $year != "0"){
+			$sql = 'INSERT INTO `students`(`name`, `UFID`, `email`, `phone`, `major`, `regitration_type`, `section`, `term`, `mentor_name`, `mentor_ufid`, `mentor_email`, `mentor_phone`, `mentor_department`, `mentor_college`, `description`) VALUES ("'.$name.'","'.$ufid.'","'.$email.'","'.$phone.'","'.$major.'","'.$regitration_type.'","'.$section.'","'.$term.' '.$year.'","'.$mentor_name.'","'.$mentor_ufid.'","'.$mentor_email.'","'.$mentor_phone.'","'.$mentor_department.'","'.$mentor_college.'","'.$brief_description.'")';
+			mysql_query($sql) or die(mysql_error());
 
-		$sql = 'INSERT INTO `students`(`name`, `UFID`, `email`, `phone`, `major`, `regitration_type`, `section`, `term`, `mentor_name`, `mentor_ufid`, `mentor_email`, `mentor_phone`, `mentor_department`, `mentor_college`, `description`) VALUES ("'.$name.'","'.$ufid.'","'.$email.'","'.$phone.'","'.$major.'","'.$regitration_type.'","'.$section.'","'.$term.'","'.$mentor_name.'","'.$mentor_ufid.'","'.$mentor_email.'","'.$mentor_phone.'","'.$mentor_department.'","'.$mentor_college.'","'.$brief_description.'")';
-		mysql_query($sql) or die(mysql_error());
-
-		mysql_close();
-		$message = 'User registred successfully!';
+			mysql_close();
+			$message = 'User registred successfully!';
+		}else{
+			if($term == "0"){
+				$alert = 'You must select a term valid';
+			}elseif($year == "0"){
+				$alert = 'You must select a year valid';
+			}
+		}
 	}
 	$sql="SELECT * FROM terms";
 	$terms = mysql_query($sql);	
@@ -79,6 +89,11 @@
 			The form is closed
 		</div>
 		<?php } ?>
+		<?php if($alert != ''){ ?>
+		<div class="alert alert-danger" role="alert">
+			<?php echo $alert; ?>
+		</div>
+		<?php } ?>
 		<div class="container-contact3">
 			<div class="wrap-contact3">
 				<img src="./images/banner.jpeg" class="wrap-image">
@@ -93,12 +108,12 @@
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate="UFID is required">
-						<input class="input3" type="text" name="ufid" placeholder="UFID #" required>
+						<input class="input3" type="text" name="ufid" placeholder="UFID#" required>
 						<span class="focus-input3"></span>
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input3" type="text" name="email" placeholder="Your UF E-mail">
+						<input class="input3" type="text" name="email" placeholder="Your Email">
 						<span class="focus-input3"></span>
 					</div>
 
@@ -115,7 +130,7 @@
 
 					<div class="wrap-contact3-form-radio">
 						<div class="contact3-form" style="color: white;">
-							I am requesting registration for
+							Registration For
 						</div>
 						<br>
 						<div class="contact3-form-radio m-r-42">
@@ -133,14 +148,35 @@
 						</div>
 					</div>
 
-					<div class="wrap-input3 validate-input" data-validate="Section is required">
-						<input class="input3" name="section" placeholder="Section" required>
+					<div class="wrap-input3 validate-input" data-validate="Class Number is required">
+						<input class="input3" name="section" placeholder="Class Number" required>
 						<span class="focus-input3"></span>
 					</div>
 
-					<div class="wrap-input3 validate-input" data-validate="Term is required">
-						<input class="input3" name="term" placeholder="Term" required>
-						<span class="focus-input3"></span>
+					<div class="row">
+						<div class="wrap-input3 col-lg-6 col-md-6 col-xs-6">
+							<div>
+								<select class="selection-2" name="term">
+									<option value="0">Term:</option>
+									<option value="Fall">Fall</option>
+									<option value="Spring">Spring</option>
+								</select>
+							</div>
+							<span class="focus-input3"></span>
+						</div>
+						<div class="wrap-input3 col-lg-6 col-md-6 col-xs-6">
+							<div>
+								<select class="selection-2" name="year">
+									<option value="0">Year:</option>
+									<option value="2019">2019</option>
+									<option value="2020">2020</option>
+									<option value="2021">2021</option>
+									<option value="2022">2022</option>
+									<option value="2023">2023</option>
+								</select>
+							</div>
+							<span class="focus-input3"></span>
+						</div>
 					</div>
 
 					<br>
@@ -160,28 +196,28 @@
 						<span class="focus-input3"></span>
 					</div>
 
-					<div class="wrap-input3 validate-input" data-validate="Mentor E-mail is required">
-						<input class="input3" name="mentor_email" placeholder="Mentor E-mail" required>
+					<div class="wrap-input3 validate-input" data-validate="Mentor Email is required">
+						<input class="input3" name="mentor_email" placeholder="Mentor Email" required>
 						<span class="focus-input3"></span>
 					</div>
 
-					<div class="wrap-input3 validate-input" data-validate="Mentor phone is required">
-						<input class="input3" type="number" name="mentor_phone" placeholder="Mentor phone" required>
+					<div class="wrap-input3 validate-input" data-validate="Mentor Phone is required">
+						<input class="input3" type="number" name="mentor_phone" placeholder="Mentor Phone" required>
 						<span class="focus-input3"></span>
 					</div>
 					
-					<div class="wrap-input3 validate-input" data-validate="Mentor department is required">
-						<input class="input3" name="mentor_department" placeholder="Mentor department" required>
+					<div class="wrap-input3 validate-input" data-validate="Mentor Department is required">
+						<input class="input3" name="mentor_department" placeholder="Mentor Department" required>
 						<span class="focus-input3"></span>
 					</div>
 
-					<div class="wrap-input3 validate-input" data-validate="Mentor college is required">
-						<input class="input3" name="mentor_college" placeholder="Mentor college" required>
+					<div class="wrap-input3 validate-input" data-validate="Mentor College is required">
+						<input class="input3" name="mentor_college" placeholder="Mentor College" required>
 						<span class="focus-input3"></span>
 					</div>
 
-					<div class="wrap-input3 validate-input" data-validate = "Brief description is required">
-						<textarea class="input3" name="brief_description" placeholder="Brief description of research project (conceptual, 4 sentences):" required></textarea>
+					<div class="wrap-input3 validate-input" data-validate = "Brief Description is required">
+						<textarea class="input3" name="brief_description" placeholder="Brief Description of research project (conceptual, 4 sentences):" required></textarea>
 						<span class="focus-input3"></span>
 					</div>
 					<?php if($result2 == '0'){ ?>

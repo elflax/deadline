@@ -2,7 +2,7 @@
 	session_start();
 	$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
 	mysql_select_db("bioinformatics") or die(mysql_error());
-	$sql="SELECT * FROM students";
+	$sql="SELECT * FROM students WHERE status=1";
 	$result = mysql_query($sql);
 ?>
 <!DOCTYPE html>
@@ -41,8 +41,8 @@
 								<th>Email</th>
 								<th>Major</th>
 								<th>College</th>
-								<th>Section Term</th>
-								<th>Status</th>
+								<th>Class Number</th>
+								<th>Term</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -53,12 +53,8 @@
 								<td class="text-center" data-toggle="popover" title="Email" data-placement="top" data-content="<?php echo ' '.$row['email']; ?>"><?php echo $row['email']; ?></td>
 								<td class="text-center" data-toggle="popover" title="Major" data-placement="top" data-content="<?php echo ' '.$row['major']; ?>"><?php echo $row['major']; ?></td>
 								<td class="text-center" data-toggle="popover" title="College" data-placement="top" data-content="<?php echo ' '.$row['regitration_type']; ?>"><?php echo $row['regitration_type']; ?></td>
-								<td class="text-center" data-toggle="popover" title="Section Term" data-placement="top" data-content="<?php echo ' '.$row['section']; ?>"><?php echo $row['section'] .' - '. $row['term']; ?></td>
-								<?php if($row['status'] == 1){ ?>
-								<td class="text-center" data-toggle="popover" title="Status" data-placement="top" data-content="Approved">Approved</td>	
-								<?php }else{?>
-								<td class="text-center" data-toggle="popover" title="Status" data-placement="top" data-content="Deny">Deny</td>
-								<?php } ?>
+								<td class="text-center" data-toggle="popover" title="Class Number" data-placement="top" data-content="<?php echo ' '.$row['section']; ?>"><?php echo $row['section']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Term" data-placement="top" data-content="<?php echo ' '.$row['term']; ?>"><?php echo $row['term']; ?></td>
 							</tr>
 							<?php } ?>
 						</tbody>
@@ -80,18 +76,44 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/dataRender/ellipsis.js"></script>
 	<script src="vendor/bootstrap/js/popper.js"></script>
 	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script src="vendor/select2/select2.min.js"></script>
 	<script>
+			var pag = ['1'];
+		function paginate(){
+			$('.paginate_button').each((ind, elem) => {
+				$(elem).click(() => {
+					var curr = $('.current').attr('data-dt-idx');
+					if(pag.indexOf(curr) === -1){
+						pag.push(curr);
+						$('[data-toggle="popover"]').popover({
+  							trigger: 'hover'
+  						});
+					}
+					paginate();
+				});
+			});
+			$('th').each((ind, elem) => {
+				$(elem).click(() => {
+					$('[data-toggle="popover"]').popover({
+						trigger: 'hover'
+					});
+					paginate();
+				});
+			});
+		}
 		$(".selection-2").select2({
 			minimumResultsForSearch: 20,
 			dropdownParent: $('#dropDownSelect1')
 		});
 		$(document).ready(() => {
-			$('#table').DataTable({
-				dom: 'Bfrtip',
-		        buttons: ['excel'],
+			$('#table').DataTable({		        
+		        columnDefs: [ {
+			        targets: [0,3,4,6],
+			        render: $.fn.dataTable.render.ellipsis(20)
+			    } ],
 		        initComplete: function () {
 		        	$('.buttons-excel').addClass('contact3-form-btn');
 		        	$('.buttons-excel').css('min-width', '70px');
@@ -100,7 +122,7 @@
   					$('[data-toggle="popover"]').popover({
   						trigger: 'hover'
   					});
-
+					paginate();
 		        }
 			});
 		});

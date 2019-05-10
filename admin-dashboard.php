@@ -17,13 +17,15 @@
 		if(!$result){
 			$message = mysql_error();
 		}else{
-			$to = $_GET['email'];
-			$from = "example@gmail.com";
-	    	$headers = "From: $from";
 	    	if($_GET['type'] == 1){
 	    		$message = 'Your form request has been aproved';
 	    	}else{
+				$to = $_GET['email'];
+				$from = "example@gmail.com";
+		    	$headers = "From: $from";
 	    		$message = 'Your form request has been rejected';
+	    		$subject ="Application"; 
+	    		$ok = @mail($to, $subject, $message, $headers);
 	    	}
 		}
 	}
@@ -100,22 +102,21 @@
 							<tr>
 								<th>Approved/Denied by:</th>
 								<th>Action</th>
-								<th>#</th>
 								<th>Name</th>
-								<th>Student UFID</th>
+								<th>Student UFID #</th>
 								<th>Student Email</th>
 								<th>Phone</th>
 								<th>Major</th>
-								<th>College</th>
-								<th>Section</th>
+								<th>Class</th>
+								<th>Class Number</th>
 								<th>Term</th>
 								<th>Mentor Name</th>
 								<th>Mentor UFID</th>
-								<th>Mentor Phone</th>
+								<th>Mentor Phone #</th>
 								<th>Mentor Email</th>
-								<th>Mentor department</th>
 								<th>Mentor College</th>
-								<th>Brief description</th>
+								<th>Mentor Department</th>
+								<th>Research Description</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -132,22 +133,21 @@
 										<b class="text-danger">Deny</b>
 									<?php }?>
 								</td>
-								<td class="text-center" data-toggle="popover" title="#" data-placement="top" data-content="<?php echo ' '.$row['students_id']; ?>"><?php echo $row['students_id']; ?></td>
 								<td class="text-center" data-toggle="popover" title="Name" data-placement="top" data-content="<?php echo ' '.$row['students_name']; ?>"><?php echo $row['students_name']; ?></td>
-								<td class="text-center" data-toggle="popover" title="Student UFID" data-placement="top" data-content="<?php echo ' '.$row['UFID']; ?>"><?php echo $row['UFID']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Student UFID #" data-placement="top" data-content="<?php echo ' '.$row['UFID']; ?>"><?php echo $row['UFID']; ?></td>
 								<td class="text-center" data-toggle="popover" title="Student Email" data-placement="top" data-content="<?php echo ' '.$row['email']; ?>"><?php echo $row['email']; ?></td>
 								<td class="text-center" data-toggle="popover" title="Phone" data-placement="top" data-content="<?php echo ' '.$row['phone']; ?>"><?php echo $row['phone']; ?></td>
 								<td class="text-center" data-toggle="popover" title="Major" data-placement="top" data-content="<?php echo ' '.$row['major']; ?>"><?php echo $row['major']; ?></td>
-								<td class="text-center" data-toggle="popover" title="College" data-placement="top" data-content="<?php echo ' '.$row['regitration_type']; ?>"><?php echo $row['regitration_type']; ?></td>
-								<td class="text-center" data-toggle="popover" title="Section" data-placement="top" data-content="<?php echo ' '.$row['section']; ?>"><?php echo $row['section']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Class" data-placement="top" data-content="<?php echo ' '.$row['regitration_type']; ?>"><?php echo $row['regitration_type']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Class Number" data-placement="top" data-content="<?php echo ' '.$row['section']; ?>"><?php echo $row['section']; ?></td>
 								<td class="text-center" data-toggle="popover" title="Term" data-placement="top" data-content="<?php echo ' '.$row['term']; ?>"><?php echo $row['term']; ?></td>
 								<td class="text-center" data-toggle="popover" title="Mentor Name" data-placement="top" data-content="<?php echo ' '.$row['mentor_name']; ?>"><?php echo $row['mentor_name']; ?></td>
 								<td class="text-center" data-toggle="popover" title="Mentor UFID" data-placement="top" data-content="<?php echo ' '.$row['mentor_ufid']; ?>"><?php echo $row['mentor_ufid']; ?></td>
-								<td class="text-center" data-toggle="popover" title="Mentor Phone" data-placement="top" data-content="<?php echo ' '.$row['mentor_phone']; ?>"><?php echo $row['mentor_phone']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Mentor Phone #" data-placement="top" data-content="<?php echo ' '.$row['mentor_phone']; ?>"><?php echo $row['mentor_phone']; ?></td>
 								<td class="text-center" data-toggle="popover" title="Mentor Email" data-placement="top" data-content="<?php echo ' '.$row['mentor_email']; ?>"><?php echo $row['mentor_email']; ?></td>
-								<td class="text-center" data-toggle="popover" title="Mentor department" data-placement="top" data-content="<?php echo ' '.$row['mentor_department']; ?>"><?php echo $row['mentor_department']; ?></td>
 								<td class="text-center" data-toggle="popover" title="Mentor College" data-placement="top" data-content="<?php echo ' '.$row['mentor_college']; ?>"><?php echo $row['mentor_college']; ?></td>
-								<td class="text-center" data-toggle="popover" title="Brief description" data-placement="top" data-content="<?php echo ' '.$row['description']; ?>"><?php echo $row['description']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Mentor Department" data-placement="top" data-content="<?php echo ' '.$row['mentor_department']; ?>"><?php echo $row['mentor_department']; ?></td>
+								<td class="text-center" data-toggle="popover" title="Research Description" data-placement="top" data-content="<?php echo ' '.$row['description']; ?>"><?php echo $row['description']; ?></td>
 							</tr>
 							<?php } ?>
 						</tbody>
@@ -204,7 +204,7 @@
 			$('#table').DataTable({
 		        
 		        columnDefs: [ {
-			        targets: [3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
+			        targets: [3,4,5,6,7,8,9,10,11,12,13,14,15,16],
 			        render: $.fn.dataTable.render.ellipsis(20)
 			    } ],
   		        initComplete: function () {
