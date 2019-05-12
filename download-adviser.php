@@ -40,8 +40,8 @@
 
 	while ($fila = mysql_fetch_assoc($result)) {
 		 	$data[$x] = array('#' => ($x+1),
-		 					  'Approved/Deny by'=> $fila['approved_by_adviser'] , 
-		 					  'Status' =>'complete', 
+		 					  'Approved/Deny by'=> $fila['users_name'] , 
+		 					  'Status' => ($fila["status_adviser"]=='1')? "Approve":(($fila["status_adviser"]=='2')? "Deny":"Waiting" );, 
 		 					  'Name'=>$fila['students_name'], 
 		 					  'UFID #'=>$fila['UFID'],
 		 					  'Email' =>$fila['email'], 
