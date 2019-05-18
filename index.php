@@ -8,7 +8,7 @@
 	$result2 = $row2['value'];	
 	$message = '';
 	$alert = '';
-	if($result2 == '0'){
+	if($result2 != '0'){
 		header("Location: ./error.html");
 	}
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -66,7 +66,7 @@
 	$sql="SELECT * FROM terms";
 	$terms = mysql_query($sql);	
 	$sql="SELECT * FROM section";
-	$section = mysql_query($sql);	
+	$section = mysql_query($sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">
