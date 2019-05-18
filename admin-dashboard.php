@@ -11,6 +11,7 @@
 		$result = mysql_query($sql);
 	}
 	$message = '';
+	$alert = '';
 	if(isset($_GET['id'])){
 		$sql = 'UPDATE `students` SET `status`='.$_GET['type'].',`aprovated_by`='.$_SESSION['id'].' WHERE id='.$_GET['id'];
 		$result = mysql_query($sql);
@@ -18,14 +19,17 @@
 			$message = mysql_error();
 		}else{
 	    	if($_GET['type'] == 1){
-	    		$message = 'Your form request has been aproved';
+	    		$alert = 'The form request has been approved';
 	    	}else{
 				$to = $_GET['email'];
-				$from = "example@gmail.com";
-		    	$headers = "From: $from";
-	    		$message = 'Your form request has been rejected';
-	    		$subject ="Application"; 
-	    		$ok = @mail($to, $subject, $message, $headers);
+				$from = "jreal@ufl.edu";
+		    	$headers  = 'MIME-Version: 1.0' . "\r\n";
+				$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+				$headers .= 'From: MCS IT <jreal@ufl.edu>' . "\r\n";
+				$message = "We're sorry, but your application to register for the Bioinformatics Independent Research course has been denied. <br><br>   Please contact BOTH Bioinformatics Minor directors to discuss the issue with your application: <br>Valerie de Crecy-Lagard (vcrecy@ufl.edu)<br> Bryan Kolaczkowski (bryank@ufl.edu) ";
+	    		$alert = 'The form request has been rejected';
+	    		$subject ="Bioinfo Ind Res Class - Application Denied"; 
+	    		mail($to, $subject, $message, $headers);
 	    	}
 		}
 	}
@@ -39,7 +43,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Contact V3</title>
+	<title>Admin Dashboard</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
@@ -59,9 +63,9 @@
 </head>
 <body>
 	<div class="bg-contact3" style="background-image: url('images/bg-01.jpg');">
-		<?php if($message != ''){ ?>
+		<?php if($alert != ''){ ?>
 		<div class="alert alert-success" role="alert">
-			<?php echo $message; ?>
+			<?php echo $alert; ?>
 		</div>
 		<?php } ?>
 		<div class="container-contact3">
@@ -70,7 +74,7 @@
 				<span class="contact3-form-title" style="padding-bottom: 0px;">
 					Dashboard
 					<div style="text-align: right;">
-						<a href="./ajax/logout.php?type=2" class="btn btn-xs btn-success" title="logout" style="min-width: 60px;"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+						<a href="./ajax/logout.php?type=1" class="btn btn-xs btn-success" title="logout" style="min-width: 60px;"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
 					</div>
 					<div style="text-align: right;">
 						

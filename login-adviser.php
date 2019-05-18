@@ -6,7 +6,7 @@
 	$error = '';
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
-		mysql_select_db("bioinformatics") or die(mysql_error());
+	mysql_select_db("bioinformatics") or die(mysql_error());
 
 		$name = $_POST['name'];
 		$password = $_POST['password'];
@@ -44,7 +44,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Contact V3</title>
+	<title>Login Adviser</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>

@@ -3,10 +3,10 @@
 	if(!isset($_SESSION['id_adviser'])){
 		header("Location: ./login-adviser.php");
 	}
-
-	$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
+$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
 	mysql_select_db("bioinformatics") or die(mysql_error());
 	$message = '';
+	$alert = '';
 	if(isset($_GET['id'])){
 		$sql = 'UPDATE `students` SET `status_adviser`='.$_GET['type'].',`approved_by_adviser`='.$_SESSION['id_adviser'].' WHERE id='.$_GET['id'];
 		$result = mysql_query($sql);
@@ -14,15 +14,32 @@
 			$message = mysql_error();
 		}else{
 			$to = $_GET['email'];
-			$from = "example@gmail.com";
+			$from = "jreal@ufl.edu";
 	    	$headers = "From: $from";
-    		$subject ="Application"; 
+    		$headers .= "MIME-Version: 1.0\r\n";
+			$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 	    	if($_GET['type'] == 1){
-	    		$message = 'Your form request has been aproved in adviser';
+	    		$to = $_GET['email'];
+				$from = "jreal@ufl.edu";
+		    	$headers  = 'MIME-Version: 1.0' . "\r\n";
+				$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+				$headers .= 'From: MCS IT <jreal@ufl.edu>' . "\r\n";
+				$message = " Your application to register for the Bioinformatics Independent Research course has been approved. You will be registered for the course before classes begin.<br><br> If you need to change or withdraw your registration before classes start, please contact your academic advisor.";
+	    		$alert = 'The form request has been approved';
+	    		$subject ="Bioinfo Ind Res Class - Application Approved"; 
+	    		mail($to, $subject, $message, $headers);
 	    	}else{
-	    		$message = 'Your form request has been rejected in adviser';
+	    		$to = $_GET['email'];
+				$from = "jreal@ufl.edu";
+		    	$headers  = 'MIME-Version: 1.0' . "\r\n";
+				$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+				$headers .= 'From: MCS IT <jreal@ufl.edu>' . "\r\n";
+				$message = "We're sorry, but your application to register for the Bioinformatics Independent Research course has been denied, because you lack the prerequisites to take the course at this time.<br><br> Please check the course prerequisites on the Bioinformatics Minor website. You may contact your academic advisor if you feel you have received this notice in error.";
+	    		$alert = 'The form request has been rejected';
+	    		$subject ="Bioinfo Ind Res Class - Application Denied"; 
+	    		mail($to, $subject, $message, $headers);
 	    	}
-	    	$ok = @mail($to, $subject, $message, $headers);
+	    	
 		}
 	}
 	$sql="SELECT students.id as students_id, students.name as students_name, UFID, email, phone, major, regitration_type, section, term, mentor_name, mentor_ufid, mentor_email, mentor_phone, mentor_department, mentor_college, description, status, approved_by_adviser, users.name as users_name, status_adviser FROM students LEFT JOIN users ON students.approved_by_adviser=users.id WHERE students.status=1";
@@ -31,7 +48,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Contact V3</title>
+	<title>Adviser Dashboard</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
@@ -49,9 +66,9 @@
 </head>
 
 	<div class="bg-contact3" style="background-image: url('images/bg-01.jpg');">
-		<?php if($message != ''){ ?>
+		<?php if($alert != ''){ ?>
 		<div class="alert alert-success" role="alert">
-			<?php echo $message; ?>
+			<?php echo $alert; ?>
 		</div>
 		<?php } ?>
 		<div class="container-contact3">
@@ -60,7 +77,7 @@
 				<span class="contact3-form-title" style="padding-bottom: 0px;">
 					Adviser
 					<div style="text-align: right;">
-						<a href="./ajax/logout.php?type=1" class="btn btn-xs btn-success" title="logout" style="min-width: 60px;"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+						<a href="./ajax/logout.php?type=2" class="btn btn-xs btn-success" title="logout" style="min-width: 60px;"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
 					</div>
 					<div style="text-align: right;">
 						

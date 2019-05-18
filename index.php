@@ -1,4 +1,5 @@
 <?php
+
 	$mysql_id = mysql_connect("localhost","root","") or die(mysql_error());
 	mysql_select_db("bioinformatics") or die(mysql_error());
 	$sql = 'SELECT `id`, `name`, `value` FROM `config` WHERE `id` = 1 AND `value`="0"';
@@ -7,6 +8,9 @@
 	$result2 = $row2['value'];	
 	$message = '';
 	$alert = '';
+	if($result2 == '0'){
+		header("Location: ./error.html");
+	}
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$name = $_POST['name'];
 		$ufid = $_POST['ufid'];
@@ -42,12 +46,15 @@
 		$mentor_department = stripslashes($mentor_department);
 		$mentor_college = stripslashes($mentor_college);
 		$brief_description = stripslashes($brief_description);
+		$aux = htmlspecialchars($brief_description);
+
+
 		if($term != "0" && $year != "0"){
-			$sql = 'INSERT INTO `students`(`name`, `UFID`, `email`, `phone`, `major`, `regitration_type`, `section`, `term`, `mentor_name`, `mentor_ufid`, `mentor_email`, `mentor_phone`, `mentor_department`, `mentor_college`, `description`) VALUES ("'.$name.'","'.$ufid.'","'.$email.'","'.$phone.'","'.$major.'","'.$regitration_type.'","'.$section.'","'.$term.' '.$year.'","'.$mentor_name.'","'.$mentor_ufid.'","'.$mentor_email.'","'.$mentor_phone.'","'.$mentor_department.'","'.$mentor_college.'","'.$brief_description.'")';
+			$sql = 'INSERT INTO `students`(`name`, `UFID`, `email`, `phone`, `major`, `regitration_type`, `section`, `term`, `mentor_name`, `mentor_ufid`, `mentor_email`, `mentor_phone`, `mentor_department`, `mentor_college`, `description`) VALUES ("'.$name.'","'.$ufid.'","'.$email.'","'.$phone.'","'.$major.'","'.$regitration_type.'","'.$section.'","'.$term.' '.$year.'","'.$mentor_name.'","'.$mentor_ufid.'","'.$mentor_email.'","'.$mentor_phone.'","'.$mentor_department.'","'.$mentor_college.'","'.$aux.'")';
 			mysql_query($sql) or die(mysql_error());
 
 			mysql_close();
-			$message = 'User registred successfully!';
+			$message = 'Application submitted successfully!';
 		}else{
 			if($term == "0"){
 				$alert = 'You must select a term valid';
@@ -64,7 +71,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Contact V3</title>
+	<title>Bioinformatic Form</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
@@ -99,7 +106,7 @@
 				<img src="./images/banner.jpeg" class="wrap-image">
 				<form class="contact3-form validate-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 					<span class="contact3-form-title">
-						Student Informaction
+						Student Information
 					</span>
 
 					<div class="wrap-input3 validate-input" data-validate="Name is required">
@@ -118,7 +125,7 @@
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate="UFID is required">
-						<input class="input3" type="number" name="phone" placeholder="Studen Phone #" required>
+						<input class="input3" type="number" name="phone" placeholder="Student Phone #" required>
 						<span class="focus-input3"></span>
 					</div>
 

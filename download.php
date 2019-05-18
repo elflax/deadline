@@ -41,22 +41,22 @@
 	while ($fila = mysql_fetch_assoc($result)) {
 		 	$data[$x] = array('#' => ($x+1),
 		 					  'Approved/Deny by'=> $fila['users_name'] , 
-		 					  'Status' =>'complete', 
+		 					   'Status' => ($fila["status"]=='1')? "Approve":(($fila["status"]=='2')? "Deny":"Waiting" ), 
 		 					  'Student Name'=>$fila['students_name'], 
-		 					  'Student UFID #'=>$fila['UFID'],
+		 					  'Student UFID'=>$fila['UFID'],
 		 					  'Student Email' =>$fila['email'], 
 		 					  'Student Phone'=> $fila['phone'], 
 		 					  'Major'=>$fila['major'],
-		 					  'Class' =>$fila['regitration_type'], 
-		 					  'Class Number'=>$fila['section'], 
+		 					  'College' =>$fila['regitration_type'], 
+		 					  'Section'=>$fila['section'], 
 		 					  'Term'=>$fila['term'],
 		 					  'Mentor Name' =>$fila['mentor_name'], 
 		 					  'Mentor UFID'=>$fila['mentor_ufid'], 
-		 					  'Mentor Phone #'=>$fila['mentor_phone'],
+		 					  'Mentor Phone'=>$fila['mentor_phone'],
 		 					  'Mentor Email' =>$fila['mentor_email'], 
-		 					  'Mentor College'=>$fila['mentor_college'],
 		 					  'Mentor Department'=>$fila['mentor_department'], 
-		 					  'Research Description' => trim(preg_replace('/\s+/', ' ', $fila['description']))
+		 					  'Mentor College'=>$fila['mentor_college'],
+		 					  'Brief Description' => trim(preg_replace('/\s+/', ' ',  htmlspecialchars_decode($fila['description'])))
 		 					  
 		 					  );
 		 	$x++;
