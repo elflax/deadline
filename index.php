@@ -47,9 +47,20 @@
 		$mentor_college = stripslashes($mentor_college);
 		$brief_description = stripslashes($brief_description);
 		$aux = htmlspecialchars($brief_description);
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$alert = 'E-mail is not a valid email';
+		}
+		if (!filter_var($mentor_email, FILTER_VALIDATE_EMAIL)) {
+			$alert = 'Mentor E-mail is not a valid email';
+		}
+		if(strlen($phone) != 10){
+			$alert = 'Phone number must to have 10 digits';
+		}
+		if(strlen($mentor_phone) != 10){
+			$alert = 'Mentor phone number must to have 10 digits';
+		}
 
-
-		if($term != "0" && $year != "0"){
+		if($term != "0" && $year != "0" && $alert == ''){
 			$sql = 'INSERT INTO `students`(`name`, `UFID`, `email`, `phone`, `major`, `regitration_type`, `section`, `term`, `mentor_name`, `mentor_ufid`, `mentor_email`, `mentor_phone`, `mentor_department`, `mentor_college`, `description`) VALUES ("'.$name.'","'.$ufid.'","'.$email.'","'.$phone.'","'.$major.'","'.$regitration_type.'","'.$section.'","'.$term.' '.$year.'","'.$mentor_name.'","'.$mentor_ufid.'","'.$mentor_email.'","'.$mentor_phone.'","'.$mentor_department.'","'.$mentor_college.'","'.$aux.'")';
 			mysql_query($sql) or die(mysql_error());
 
@@ -120,7 +131,7 @@
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input3" type="text" name="email" placeholder="Your Email">
+						<input class="input3" type="email" name="email" placeholder="Your Email">
 						<span class="focus-input3"></span>
 					</div>
 
@@ -204,7 +215,7 @@
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate="Mentor Email is required">
-						<input class="input3" name="mentor_email" placeholder="Mentor Email" required>
+						<input class="input3" type="email" name="mentor_email" placeholder="Mentor Email" required>
 						<span class="focus-input3"></span>
 					</div>
 
@@ -246,6 +257,7 @@
 	<script src="vendor/bootstrap/js/popper.js"></script>
 	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script src="vendor/select2/select2.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 	<script>
 		$(".selection-2").select2({
 			minimumResultsForSearch: 20,
