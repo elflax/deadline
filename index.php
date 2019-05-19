@@ -115,7 +115,7 @@
 		<div class="container-contact3">
 			<div class="wrap-contact3">
 				<img src="./images/banner.jpeg" class="wrap-image">
-				<form class="contact3-form validate-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+				<form class="contact3-form validate-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="form-index">
 					<span class="contact3-form-title">
 						Student Information
 					</span>
@@ -131,13 +131,15 @@
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input3" type="email" name="email" placeholder="Your Email">
+						<input class="input3" id="email" type="email" name="email" placeholder="Your Email">
 						<span class="focus-input3"></span>
+						<span class="text-danger" id="ErrorEmail"></span>
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate="UFID is required">
-						<input class="input3" type="number" name="phone" placeholder="Student Phone #" required>
+						<input class="input3" type="number" id="phone" name="phone" placeholder="Student Phone #" required>
 						<span class="focus-input3"></span>
+						<span class="text-danger" id="ErrorPhone"></span>
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate="Major is required">
@@ -215,13 +217,15 @@
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate="Mentor Email is required">
-						<input class="input3" type="email" name="mentor_email" placeholder="Mentor Email" required>
+						<input class="input3" type="email" id="mentor_phone" name="mentor_email" placeholder="Mentor Email" required>
 						<span class="focus-input3"></span>
+						<span class="text-danger" id="ErrorMentorEmail"></span>
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate="Mentor Phone is required">
-						<input class="input3" type="number" name="mentor_phone" placeholder="Mentor Phone" required>
+						<input class="input3" type="number" id="mentor_phone" name="mentor_phone" placeholder="Mentor Phone" required>
 						<span class="focus-input3"></span>
+						<span class="text-danger" id="ErrorMentorPhone"></span>
 					</div>
 					
 					<div class="wrap-input3 validate-input" data-validate="Mentor Department is required">
@@ -269,6 +273,43 @@
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
 <script>
+	$(document).ready(() => {
+		$( "#form-index" ).submit(function( event ) {
+		  	event.preventDefault();
+		  	var email = $('#email').val();
+		  	var phone = $('#phone').val();
+		  	var mentor_email = $('#mentor_email').val();
+		  	var mentor_phone = $('#mentor_phone').val();
+		  	var band = 0;
+		  	if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(email)){
+			   
+			} else {
+			   band = 1;
+			   $('#ErrorEmail').text('Format incorrect');
+			}
+			if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(mentor_email)){
+			   
+			} else {
+			   band = 1;
+			   $('#ErrorMentorEmail').text('Format incorrect');
+			}
+			if (phone.length != 10){
+			   
+			} else {
+			   band = 1;
+			   $('#ErrorPhone').text('Format incorrect');
+			}
+			if (mentor_phone.length != 10){
+			   
+			} else {
+			   band = 1;
+			   $('#ErrorMentorPhone').text('Format incorrect');
+			}
+			if(band == 0){
+				$('#form-index').submit();
+			}
+		});
+	});
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
