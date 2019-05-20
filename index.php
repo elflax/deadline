@@ -217,7 +217,7 @@
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate="Mentor Email is required">
-						<input class="input3" type="email" id="mentor_phone" name="mentor_email" placeholder="Mentor Email" required>
+						<input class="input3" type="email" id="mentor_email" name="mentor_email" placeholder="Mentor Email" required>
 						<span class="focus-input3"></span>
 						<span class="text-danger" id="ErrorMentorEmail"></span>
 					</div>
@@ -244,7 +244,7 @@
 					</div>
 					<?php if($result2 == '0'){ ?>
 					<div class="container-contact3-form-btn text-center" style="text-align: center;">
-						<button class="contact3-form-btn" id="submit-button">
+						<button class="contact3-form-btn" type="button" id="submit-button">
 							Submit
 						</button>
 					</div>
@@ -274,20 +274,19 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
 <script>
 	$(document).ready(() => {
-		$( "#form-index" ).submit(function( event ) {
-		  	event.preventDefault();
+		$( "#submit-button" ).click(function() {
 		  	var email = $('#email').val();
 		  	var phone = $('#phone').val();
 		  	var mentor_email = $('#mentor_email').val();
 		  	var mentor_phone = $('#mentor_phone').val();
 		  	var band = 0;
-		  	if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(email)){
+		  	if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)){
 			   
 			} else {
 			   band = 1;
 			   $('#ErrorEmail').text('Format incorrect');
 			}
-			if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(mentor_email)){
+			if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(mentor_email)){
 			   
 			} else {
 			   band = 1;
@@ -305,6 +304,7 @@
 			   band = 1;
 			   $('#ErrorMentorPhone').text('Format incorrect');
 			}
+			console.log(band);
 			if(band == 0){
 				$('#form-index').submit();
 			}
