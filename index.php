@@ -12,6 +12,7 @@
 		header("Location: ./error.html");
 	}
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
+
 		$name = $_POST['name'];
 		$ufid = $_POST['ufid'];
 		$email = $_POST['email'];
@@ -47,6 +48,45 @@
 		$mentor_college = stripslashes($mentor_college);
 		$brief_description = stripslashes($brief_description);
 		$aux = htmlspecialchars($brief_description);
+
+
+		/*------ Validaciones de los estudiantes ------*/
+		$band = 1;
+
+		/* validacion 1 (No puede aplicar para evaluaciones pendientes) */
+
+		$sql = 'SELECT * FROM `students` WHERE UFID = "'.$ufid.'" and status < 1 and status_adviser < 1';
+		$result = mysql_query($sql);
+		$row = mysql_fetch_assoc($result);
+
+		if($row){
+			$band = 0;
+			$alert = 'Sorry, you have a pending application, we cannot proceed with your request, if you need any help please contact the administrators.';
+		}
+
+		/* validacion 2 (Si esta aprobado, no puede volver a aplicar) */
+
+		$sql = 'SELECT * FROM `students` WHERE UFID = "'.$ufid.'" and status = 1 and status_adviser = 1';
+		$result = mysql_query($sql);
+		$row = mysql_fetch_assoc($result);
+
+		if($row){
+			$band = 0;
+			$alert = 'Sorry, we cannot proceed with your request as your status is APPROVED, if you need any help please contact the administrators.';
+		}
+
+		/* validacion 3 (Si aplico el mismo dia y fue negado, no puede volver a aplicar) */
+
+		$sql = 'SELECT * FROM `students` WHERE UFID = "'.$ufid.'" and status = 2 and status_adviser = 2 and date = "'.date("Y-m-d").'" ';
+		$result = mysql_query($sql);
+		$row = mysql_fetch_assoc($result);
+
+		if($row){
+			$band = 0;
+			$alert = 'Sorry, we cannot proceed with your request as your last application was DENIED today, if you need any help please contact the administrators.';
+		}
+
+		if($band){
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			$alert = 'E-mail is not a valid email';
 		}
@@ -61,7 +101,7 @@
 		}
 
 		if($term != "0" && $year != "0" && $alert == ''){
-			$sql = 'INSERT INTO `students`(`name`, `UFID`, `email`, `phone`, `major`, `regitration_type`, `section`, `term`, `mentor_name`, `mentor_ufid`, `mentor_email`, `mentor_phone`, `mentor_department`, `mentor_college`, `description`) VALUES ("'.$name.'","'.$ufid.'","'.$email.'","'.$phone.'","'.$major.'","'.$regitration_type.'","'.$section.'","'.$term.' '.$year.'","'.$mentor_name.'","'.$mentor_ufid.'","'.$mentor_email.'","'.$mentor_phone.'","'.$mentor_department.'","'.$mentor_college.'","'.$aux.'")';
+			$sql = 'INSERT INTO `students`(`name`, `UFID`, `email`, `phone`, `major`, `regitration_type`, `section`, `term`, `mentor_name`, `mentor_ufid`, `mentor_email`, `mentor_phone`, `mentor_department`, `mentor_college`, `description`,`date`) VALUES ("'.$name.'","'.$ufid.'","'.$email.'","'.$phone.'","'.$major.'","'.$regitration_type.'","'.$section.'","'.$term.' '.$year.'","'.$mentor_name.'","'.$mentor_ufid.'","'.$mentor_email.'","'.$mentor_phone.'","'.$mentor_department.'","'.$mentor_college.'","'.$aux.'","'.date("Y-m-d").'")';
 			mysql_query($sql) or die(mysql_error());
 
 			mysql_close();
@@ -74,10 +114,15 @@
 			}
 		}
 	}
+
+	}
+
 	$sql="SELECT * FROM terms";
 	$terms = mysql_query($sql);	
 	$sql="SELECT * FROM section";
 	$section = mysql_query($sql);
+
+	
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -115,7 +160,7 @@
 		<div class="container-contact3">
 			<div class="wrap-contact3">
 				<img src="./images/banner.jpeg" class="wrap-image">
-				<form class="contact3-form validate-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="form-index">
+				<form class="contact3-form validate-form" id="form-id" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 					<span class="contact3-form-title">
 						Student Information
 					</span>
@@ -131,13 +176,13 @@
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input3" id="email" type="email" name="email" placeholder="Your Email">
+						<input class="input3" type="email" id="email" name="email" placeholder="Your Email">
 						<span class="focus-input3"></span>
 						<span class="text-danger" id="ErrorEmail"></span>
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate="UFID is required">
-						<input class="input3" type="number" id="phone" name="phone" placeholder="Student Phone #" required>
+						<input class="input3" min="1" minlength="10" maxlength="10" type="number" id="phone" name="phone" placeholder="Student Phone #" required>
 						<span class="focus-input3"></span>
 						<span class="text-danger" id="ErrorPhone"></span>
 					</div>
@@ -223,7 +268,7 @@
 					</div>
 
 					<div class="wrap-input3 validate-input" data-validate="Mentor Phone is required">
-						<input class="input3" type="number" id="mentor_phone" name="mentor_phone" placeholder="Mentor Phone" required>
+						<input class="input3" min="1" minlength="10" maxlength="10" type="number" id="mentor_phone" name="mentor_phone" placeholder="Mentor Phone" required>
 						<span class="focus-input3"></span>
 						<span class="text-danger" id="ErrorMentorPhone"></span>
 					</div>
@@ -248,6 +293,7 @@
 							Submit
 						</button>
 					</div>
+					<button type="submit" style="display: none;" id="button-sub"></button>
 					<?php } ?>
 				</form>
 			</div>
@@ -263,16 +309,6 @@
 	<script src="vendor/select2/select2.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 	<script>
-		$(".selection-2").select2({
-			minimumResultsForSearch: 20,
-			dropdownParent: $('#dropDownSelect1')
-		});
-	</script>
-	<script src="js/main.js"></script>
-
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
-<script>
 	$(document).ready(() => {
 		$( "#submit-button" ).click(function() {
 		  	var email = $('#email').val();
@@ -292,24 +328,33 @@
 			   band = 1;
 			   $('#ErrorMentorEmail').text('Format incorrect');
 			}
-			if (phone.length != 10){
+			if (/^[0-9]{10,10}$/.test(phone)){
 			   
 			} else {
 			   band = 1;
 			   $('#ErrorPhone').text('Format incorrect');
 			}
-			if (mentor_phone.length != 10){
+			if (/^[0-9]{10,10}$/.test(mentor_phone)){
 			   
 			} else {
 			   band = 1;
 			   $('#ErrorMentorPhone').text('Format incorrect');
 			}
-			console.log(band);
-			if(band == 0){
-				$('#form-index').submit();
+			if(band === 0){
+				$('#button-sub').click();
 			}
 		});
 	});
+		$(".selection-2").select2({
+			minimumResultsForSearch: 20,
+			dropdownParent: $('#dropDownSelect1')
+		});
+	</script>
+	<script src="js/main.js"></script>
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+<script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
